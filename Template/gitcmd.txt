@@ -1,0 +1,50 @@
+Git -Free and open source version control system.
+Basic git command-
+1.git init:create a new git repository
+2.git clone:when you clone a repository you create a copy of the original repository on your local machine.
+3.git fork:fork repository you create a copy of original repository on your github account.
+4.pwd:present directory,it tells about which folder are you working.
+5.cd:change directory,it enter to that folder which is provided.
+6.rm-rf.git:delete the content of folder in which you are working .
+7.git add --a :changes to be commited in whole folder.
+8.git add <file name>:changes to be commited in this file not in whole folder.
+9.ls:list content of current folder.
+10.git diff:it show changes between commits/stagging.
+11.git diff --staged:after staging to show changes.
+12.git commit -a -m "Direct commit";skipping the staggin area,it will not commit that file which are not stagged.
+13.git log:show all commit.
+14.git rm <file name>:remove that paricular file and also staged it.
+15.git mv <old name> <new name>:rename as well as staged it.
+16.git rm --cached <file name>:for explicitly untracking a file.
+17.rm -rf .git:remove git repostitory.
+18.git log -p:what changes done in file can be seen.
+19.git -p -n:show commit and changes to n no. only.
+20.git log --stat:it show commit and changes in short.
+21.q :used for exit from log.
+22.git log -- pretty=oneline:it show every commit in one line.
+23.git lof --pretty=short:it show in short.
+24.git log --since=2.days:it show last two days commit.
+25.git log --pretty=format:"%h--%an":%h=hash commit %an=auth@name.
+26.git commit --amend:for amendment 
+27.git restore --staged <file name>:for untracking a file .
+28.git checkout --<file name>:for unmodifing.
+29.git checkout -f :for unmodifing many file.
+29.pull:github to our system all code with history of change
+30.push:it will upload that code to github which you changes.
+31.git remote:file name.
+32.git remote -v:give two url of push and fetch(pull).
+33.git push -u origin master :added file to github.
+34.alias:to write  small command in place of large command.
+35.git config --global alias.<small name> <large name>.
+36.git checkout -b <branch name>:for switching to a new branch.
+37.git checkout master :switched to branch "master".
+38.git branch:show all your branches as well as  green one is that branch in which your present at that time.
+39.git merge <branch name>:it will merge file <branch name> to master branch.
+40.git add <file name>:for merging two branches.
+41.git branch --merged:already merge branches.
+42.git branch --no-merged:not merged branches.
+43.git branch -d <branch name>:give error if <branch name> is not merged else deleted.
+44.git branch -D <branch name>:no error and branch gets deleted.
+45.git branch -v :give information of all branch change .
+46.git push origin <branch name>:pushing new branch on github.
+47.git push -d origin <branch name>:deleting branch from github.
