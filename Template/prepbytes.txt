@@ -1,0 +1,82 @@
+//c++ is object oriented language
+//c++ = c with classes
+//function is basic unit of functional programming language
+//classes is only blueprint not it actully exit ,what actually exit is object
+//Application of c++
+//adobe system, maya
+//Tokens: Smallest element of a program that a compiler can understand
+//keywords: pedefined meaning
+//Constants:fixed value that do not change during execution of program
+//const int x;the thing with conat variable is that they should we inilize at the same place where it declare ,so this is wrong
+//const int x=10;this is  write method
+//strings:array of character 
+//identifiers:refers to the name of variable ,classes ,structures ,function,array
+//identifier can not use keyword
+//special symbol * [] {} . , ~
+//Operator
+//Unary ++ --
+//binary + - % && || & |
+//ternary condition? statement1:statement2
+//Declaration vs Defination
+// declaration just informing compiler about variable 
+//defining is allocating memory to variable
+// extern int x; just informing compiler that it is defined in someother file and no memory is allocated
+//Data types:size and operation
+//fundamental data type:bool,char,int ,float,double
+//derived datat type:pointers,array ,reference
+// user defined data type : structure ,classes ,enums, tpedef
+//bool:true,false
+//boolz=x==y;if x==y then z=true and if x!=y then z=false
+//bool :1 byte
+//integer data tyoe size depend upon size of operating system for example 16bit os have 2 byte int ,32 bit os have 4 byte, 64 bit os have 8 byte int
+//float 4byte and double 8 byte
+//no. of values that a data type can store=2^(8*no of bytes of tha data type)
+//wchar_t=2 bytes char data type
+//Qualifier:short,long ,signed,unsigned
+//Short unsigned int x;
+//for this long declaration we can use short name with the help of typedef:typedef short unsigned int ui; now i can use it as ui x,y;
+// enumeration:we decalre a data type person and person can have sit , hand ,walk:enum person {sit,hand, walk};
+//enum person {sit=2 ,stand=3 ,walk=6} p;
+//if we print p=sit;cout<<p;2 is printed
+// p is data type of person
+//Arithmetic operator:+,-,/,*,%
+//Relational operators:comparison,>,<,==,!=,>=,<=
+//Logical operators:&&,||,!
+//bitwise operators:&,|,^,~,<<,>>
+//other operator:sizeof,ternary,assignment operator,increament and decreament
+//postfix:X++,x--
+//prefix:--x,++x
+//sizeof(a)=it gives me size of data type of that which a is
+//bitwise operators
+//x=10,y=25 then x&y=8 because x in binary form 00001010 and y  is 00011001 then after doing bit by bit and operation we get 00001000 we get 8
+//x=00010011,x<<2:01001100 and x>>2:00000100
+//left shift x<<n is equal to x*2^n;
+//right shift x>>n is equal to 2^n;
+//~x it  convert 0 to 1 and 1 to 0
+//^ xor:x^y it can we find by following method:0 and 1 give 1 while if both 0 or both 1 then it give 0 value
+//ternary operator
+//(condition?print Ram:Print Sita ):it is same as if(condition) print Ram else print Sita
+//operator precedence:it determine which operator is performed first in an expression
+//Associativity:it is used when two operators of same precedance appear in an expression .it can be either left to right or right to left
+//right to left associativity operator:unary operator(++ -- !), assignment operator(+= -= *= /= &= ^= |=)
+//selection statements:if,if else ,else if ,switch
+//iteration statements
+//switch for several cases
+//switch case statement is constant that mean int,char ,enum
+//do{ statement}(condition);even the conditon is not follow statement is going to  execute
+//body of do while runs at least once
+//for loop :for(initialization;conditon ;update){statement}
+//break:the loops get terminated and we are the outside of the loop
+//continue:escapes the particular iteration on which condition is satisfied
+//function:predefined and user defined 
+//function declaration: return type function name (data type parameters);
+//function definition: return type function name (data type parameters name ){set of statements return statements}
+//funciton calling :funciton name(list of parameters);
+//
+#include<iostream>//several function are predefined in library
+using namespace std;//we club libraries in some namespace,for example here iostream library is present in std namespace 
+int main()
+{
+    cout<<"Hello World";
+    return 0;
+}
