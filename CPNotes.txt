@@ -1,0 +1,509 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N1=1e5+7;
+const int N2=1e3+7;
+int  pf1[N1];
+long long pf2[N2][N2];
+//Modular arthimetic
+
+/* 
+1.(a+b)%M=((a%M)+(b%M))%M
+2.(a*b)%M=((a%M)*(b%M))%M
+3.(a-b)%M=((a%M)-(b%M)+M)%M
+4.(a/b)%M=((a%M)*(b^-1)%M)%M
+b^-1(multiplicative inverse) can be calculated with help of binary exponention or modular exponention.
+why print module M:because of range of value got overflow
+why we use M=10^9+7 bcoz M is a prime no. ,so one can calculate multiplicative inverse from 1 to M */
+
+//Array sum
+/* int a_sum(int n,int a[])
+{
+    if(n<0)return 0;
+    return a_sum(n-1,a)+a[n];
+} */
+//Digit sum
+/* int digit_sum(int n)
+{
+    if(n==0)return 0;
+    return digit_sum(n/10)+n%10;
+} */
+
+//calculating frequency of each char using map
+
+/* map<char,int>a;
+	for(int i=0;i<n;i++)
+	{
+		a[s[i]]++;//calulating frequency of each character in string using map
+
+	} */
+
+//checking subsequence with the help of two pointer method
+
+/* //Returns true if s1 is subsequence of s2
+bool issubsequence(string& s1, string& s2)
+{
+    int n = s1.length(), m = s2.length();
+    int i = 0, j = 0;
+    while (i < n && j < m) {
+        if (s1[i] == s2[j])
+            i++;
+        j++;
+    }
+    //If i reaches end of s1,that mean we found all
+    //characters of s1 in s2,
+    //so s1 is subsequence of s2, else not
+    return i == n;
+} */
+//converting integer into string 
+
+  /*  int a;
+   string s;
+   stringstream ss;
+   ss<<a;
+   ss>>s; */
+
+//For making order same as before sorted in a vector
+
+ /*   bool make_given_order(pair<char,int> &p1, pair<char,int> &p2){
+	return p1.second < p2.second;}
+}*/
+
+
+int main()
+{
+    /* STL-Standard Template Library */
+
+    //Pair
+
+   /*  pair<int,string>p;
+    p=make_pair(2,"abc");//Taking input
+     p={3,"abcd"};//Taking input with different method
+    cout<<p.first<<" "<<p.second<<endl;//Printing output
+    pair<int ,string>p_arr[2];//making array of pair
+    p_arr[0]={1,"abc"};
+    p_arr[1]={2,"edf"}; */
+
+    //String array
+     
+     /* //initialize string array using string class
+    string a[n];//Here n denotes number of string 
+
+    //Decalring vector of string
+    vector<string>v; */
+
+    //Substring
+
+    /* string_name.substr(pos,len);//it will give part of string_name from pos to len
+    //if length is not given then it will return till string_name.size() */
+
+    //Vector
+
+    /* vector<int>v;
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        int x;
+        cin>>x;
+        v.push_back(x);//taking input in a vector
+    }
+    v.pop_back();//remove last element */
+
+    //Nesting in vector
+
+    /* vector<pair<int ,int >>v;
+    int x,y;
+    cin>>x>>y;
+    v.push_back({x,y});
+    cout<<v[0].first<<" "<<v[0].second<<endl; */
+
+    //varing lenght of vector with rows and column varing
+
+ /*    vector<vector<int>>v;
+    for(int i=0;i<N;i++)
+    {
+        int n;
+        cin>>n;
+        vector<int >temp;
+        for(int j=0;j<n;j++)
+        {
+            int x;
+            cin>>x;
+            temp.push_back(x);}
+            v.push_back(temp);
+        }
+    } */
+
+    //Deque
+
+    /* deque<int>d;
+    d.push_front(x);
+    d.push_back(x);
+
+    //while inserting element in deque you should use first push_front(x) not push_back(x) otherwise it will show undefined behaviour
+ */
+//Policy based data structure
+
+/* #include<ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+//we can define data structure index_set which will work like set but can be accessed like array.
+typedef tree<int,null_type,less<int>,rb_tree_tag,
+tree_order_statistics_node_update> indexed_set;
+indexed_set s;
+s.insert(2);
+s.insert(3);
+s.insert(7);
+s.insert(9); 
+auto x = s.find_by_order(2);//it return iterator
+cout << *x << "\n"; // 7
+cout << s.order_of_key(7) << "\n"; // 2,return position 
+*/
+
+    //Iterators
+
+    /* vector<int >v;
+    vector<int>::iterator it=v.begin();//decalaration
+    for(it=v.begin();it!=v.end();it++)
+    {
+        cout<<*it<<endl;//accessing element
+    }
+    for(int value:v){
+        cout<<value<<endl;//shortcut method to write iterator
+    }
+    for(auto it=v.begin();it!=v.end();it++)
+    {
+        cout<<*it<<endl;//shortcut to decalre iterator
+    } */
+
+    //Map:stored key and value in sorted oreder
+
+   /*  map<int,string>m;//declaration
+    m[1]="abc";//intilising element
+    m.insert({4,"dfe"});//other method to take input
+    m.find(4);//return iterator in O(logn)
+    m.erase(1);//delete 1 key values
+    map<int ,string>::iterator it;
+    for(it=m.begin();it!=m.end();it++)
+    {
+        cout<<(*it).first<<" "<<(*it).second<<endl;//accesing element
+    }
+    m.clear();//clear whole map */
+
+    //alternate method for map intialise
+    
+    /* int n,m;
+    cin>>n>>m;
+    map<string,string>mp;
+    for(int i=0;i<m;i++)
+    {
+        string a,b;
+        cin>>a>>b;
+        if(a.size()<=b.size())
+        {
+            mp[a]=a;
+        }
+        else
+        {
+            mp[a]=b;
+        }
+    }
+    for(int i=0;i<n;i++)
+    {
+        string s;
+        cin>>s;
+        cout<<mp[s]<<" ";
+    }
+    cout<<endl; */
+
+    //unordered_map
+
+   /*  unordered_map<int,string>m;//not sorted
+    //instertion and accesing O(1) and it not takes complex container like pair,set and map
+ */
+    //multimap
+
+    /* multimap<int,string>m;//you can dublicate also with same property of map */
+
+    //Set:only key not values as in the map
+
+    /* set<string>s;
+    s.insert("abc");//all other property are same as in map
+    unordered_set<string>m;//you can not use complex container
+    multiset<string>ms; */
+
+    //Nesting in map and set
+    /* map<pair<int,int>,int>m;
+    set<pair<int ,int>>s; */
+
+    //Stack:Last in first out
+
+    /* stack<int>s;//declartion
+    s.push(2);
+    s.push(3);
+    while(!s.empty())
+    {
+        cout<<s.top()<<endl;//accesing element
+        s.pop();//removing element
+    } */
+
+    //Queue:First in first out
+
+    /* queue<string>q;
+    q.push("abc");
+    q.push("bcd");
+    while(!q.empty())
+    {
+        cout<<q.front()<<endl;//accesing element
+        q.pop();//removing element
+    }
+ */
+
+//GRAPH
+
+//vertices-represented by circle
+//edge-line between two vertices
+//graph-collection of vertices and edges
+//edges can be uni or bi directional
+//tree-a graph which have no cycle
+//there will be n-1 edges in a tree of n nodes
+//connected components-a connected component is those collection of vertices which can be reached from other vertices and vice-versa
+//leaf node-are the node that have no children
+//depth of a node -is distance of node from root node
+//height-maximum depth of any possible leaf node from root node
+//Lowest common ancestor-first common node for two node
+
+
+//Rresentation
+
+//Matrix(Implementation)
+
+/* int n,m;
+cin>>n>>m;
+int graph[n+1][n+1]={};
+for(int i=0;i<m;i++)
+{
+    int v1,v2;
+    cin>>v1>>v2;
+    graph[v1][v2]=1;
+    graph[v2][v1];
+}
+//space complexity-O(n*n)
+ */
+ 
+//List:-(array of vectors or vectors of vectors)
+
+/* vector<int>graph2[N2];
+int n,m;
+cin>>n>>m;
+for(int i=0;i<n;i++)
+{
+    int v1,v2;
+    cin>>v1>>v2;
+    graph2[v1].push_back(v2);
+    graph2[v2].push_back(v1);
+}
+ */
+//for wighted graph
+
+/*  vector<pair<int ,int>>graph2[N2];
+int n,m;
+cin>>n>>m;
+for(int i=0;i<n;i++)
+{
+    int v1,v2,w;
+    cin>>v1>>v2>>w;
+    graph2[v1].push_back({v2,w});
+    graph2[v2].push_back({v1,w});
+}
+ */
+
+
+
+
+//Traversal
+
+//DFS
+//depth first search Implementation
+
+/* vector<int>g[N2];
+bool vis[N2];
+void dfs(int vertex)
+{
+    //take action on vertex after entering the vertex
+    vis[vertex]=true;
+    for(int child:g[vertex])
+    {
+        if(vis[vertex]) continue;
+        //take action on child before entering the child node
+        dfs(child);
+        //take action on child after entering child node
+    }
+    //take action on vertex before exiting the vertex
+
+} */
+//how to find connected components
+/* int ct=0;
+for(int i=0;i<n;i++)
+{
+    if(vis[i]) continue;
+    dfs(i);
+    ct++;
+
+
+
+}
+cout<<ct<<endl;//no. of connected component
+//to store connected component
+//just store in vector< vector<int >>connected component;
+
+*/
+//finding a loop in a graph
+
+/*  vector<int>g[N2];
+bool vis[N2];
+bool dfs(int vertex,int parent)
+{
+    //take action on vertex after entering the vertex
+    vis[vertex]=true;
+    bool isLoopexists=false;
+    for(int child:g[vertex])
+    {
+        if(vis[child]&&child==parent) continue;
+        if(vis[vertex]) return true;
+        //take action on child before entering the child node
+        isLoopexists!=dfs(child,vertex);
+        //take action on child after entering child node
+    }
+    //take action on vertex before exiting the vertex
+   return isLoopexists;
+}  */
+
+//to find Height and depth of a tree
+/* void dfs(int vertex,int par=1)
+{
+    for(int child:f[vertex])
+    {
+        if(child==par)continue;
+        depth[child]=depth[vertex]+1;
+        dfs(child,vertex);
+        height[vertex]=max(height[vertex],height[child]+1);
+    }
+} */ 
+
+
+
+
+//BFS
+
+//Algorithm
+
+//Dijkstra-for weighted directed graoh one source and multiple destination to find shortest path
+ 
+/*  vector<pair<int,int>>g[N1];
+ void dijkstra(int source)
+ {
+    vector<int>vis(N1,0);
+    vector<int>dist(N1,1e9+10);
+    set<pair<int,int>>st;//we can use multiset in place of priority queue
+    st.insert({0,source});
+    dist[source]=0;
+    while(st.size()>0)
+    {
+        auto node=*st.begin();
+        int v=node.second;
+        int dist_v=node.first;
+        st.erase(st.begin());
+        if(vis[v])continue;
+        vis[v]=1;
+        for(auto child :g[v])
+        {
+            int child_v=child.first;
+            int wt=child.second;
+            if(disr[v]+wt<dist[child_v])
+            {
+                dist[child_v]=dist[v]+wt;
+                st.insert({dist[child_v],child_v});
+            }
+        }
+    } }*/
+ 
+//Floyd Warshall Algorithm:all pairs shortest path 
+//it use for directed and undirected graph
+/* int dis_FWA[N2][N2];
+for(int i=0;i<N2;i++)
+{
+    for(int j=0;j<N2;j++)
+    {
+        if(i==j)dis_FWA[i][j]=0;
+        else dis_FWA[i][j]=INT_MAX;
+
+    }
+}
+int n,m;
+cin>>n>>m;
+for(int i=0;i<m;i++)
+{
+    int x,y,w;
+    cin>>x>>y>>w;
+    dis_FWA[x][y]=w;
+}
+for(int k=1;k<=n;k++)
+{
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            dis_FWA[i][j]=min(dis_FWA[i][j],dis_FWA[i][k]+dis_FWA[j][k]);
+        }
+    }
+
+} */
+
+
+
+//Bellman-ford
+//Disjoint set union
+//Minimum spanning tree
+//Directed acyclic graph
+//Topologivcal sorting
+
+
+
+     
+
+
+
+
+
+
+
+
+
+   
+    //Prefix sum 1-D
+    /*  int n;
+     cin>>n;
+     int a[n];
+     for(int i=1;i<=n;i++)
+     {
+        cin>>a[i];
+        pf1[i]=pf1[i-1]+a[i];
+     } */
+    //Prefix sum 2-D
+   /*  int n;
+    cin>>n;
+    int a[n][n];
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            cin>>a[i][j];
+            pf2[i][j]=a[i][j]+pf2[i-1][j]+pf2[i][j-1]-pf2[i-1][j-1];
+        }
+    } */
+    
+
+
+
+
+}
