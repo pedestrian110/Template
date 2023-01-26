@@ -18,6 +18,39 @@ using namespace std;
 
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> indexed_set;
 
+ll calpow(ll base,ll n)
+{
+    ll res=1;
+    while(n>0)
+    {
+        if(n%2==1)
+        {
+            res=res*base;
+            res%=M;
+
+        }
+        n=n>>1;
+        base=(base*base)%M;
+    }
+ return res;
+}
+
+ll modinv(ll base)
+{
+    return calpow(base,M-2);
+}
+
+ll ncr(ll n,ll r)
+{
+    vector<ll>fact(n+1,1);
+    for(ll i=2;i<=n;i++)
+    {
+        fact[i]=(fact[i-1]*i)%M;
+    }
+    ll inv=modinv(fact[r])*modinv(fact[r]);
+    inv%=M;
+    return (fact[n]*inv)%M;
+}
 const int M=1e9+7;
 const int  N=1e7+19;
 void knightstour()
