@@ -1,7 +1,6 @@
 /**
  *    Author:  knightstour
- *    Created: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND 
- *    Contest:    
+ *    Created: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND     
 **/ 
                           
 #pragma GCC optimize("O3")
@@ -128,7 +127,7 @@ freopen((fileName + ".out").c_str(), "w", stdout);
 }
 
 void knightstour() {
-    
+   
 } 
 
 int main()
@@ -136,6 +135,10 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     setIO();
+    #ifndef ONLINE_JUDGE
+	   freopen("in.txt","r",stdin);
+	   freopen("out.txt","w",stdout);
+    #endif
     int t=1;
     cin>>t;
     while(t--)
