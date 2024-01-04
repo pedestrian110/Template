@@ -50,7 +50,7 @@ void func(T a,Args... b)
 }
 
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> indexed_set;
-
+mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
 const int M=1e9+7;
 const int  N=1e7+19;
 ll sum(ll a, ll b) {
@@ -132,6 +132,7 @@ void knightstour() {
 
 int main()
 {
+    //auto begin = std::chrono::high_resolution_clock::now();
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     setIO();
@@ -145,4 +146,7 @@ int main()
     {
          knightstour();
     }
+    //auto end = std::chrono::high_resolution_clock::now();
+    //auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    //cout << "Time measured: " << elapsed.count() * 1e-9 << " seconds.\n"; 
 }
