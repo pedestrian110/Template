@@ -1,0 +1,13 @@
+1. Take a deep breath, don’t be nervous, read the questions slowly and understand them clearly. The questions are often simpler than you think.
+2. Violent enumeration: What to enumerate, and whether some techniques can be used to speed up the enumeration (preprocessing, prefix sum, data structure, number theory chunking).
+3. Greedy: Is it necessary to sort or use a data structure (pq)? Is it necessarily optimal to be greedy?
+4. Bisection: Does it satisfy monotonicity, how to bisection, and how to determine the return value of the bisection function.
+5. Bitwise operations: Bitwise greed is still related to the nature of the bitwise operations themselves.
+6. Mathematics question: Is it related to the greatest common factor, prime factor, and modulus?
+7.dp: How to design the state, what is the state transition equation, what is the initial state, whether to use loop or memory transfer.
+8. Search: dfs or bfs, what is the state when searching, and does it need to be memorized?
+9. Tree problem: It is tree dp, tree greedy, or tree search.
+10. Graph theory: What kind of relationship is relied on to construct the graph, whether it is the result of loop statistics or the shortest path.
+11. Combinatorial mathematics: There are several types of values, how each value is composed, and what is the inclusion-exclusion relationship.
+12. Interactive question: How to divide log(n) times into two, how to find some values ​​through n times of 2*n times, and then find the answer based on the remaining times.
+13. If none of the above are true, there is probably a point that you have not noticed. Remember that the opposite is true when it is difficult to be positive.
