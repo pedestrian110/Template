@@ -1,0 +1,140 @@
+States->entirly defined answer
+->In recursive dp order of states getting computed doesn't matter.
+->In iterative dp order of states getting computed is important.
+->Always make dp vector not dp array like this vector<int>dp(n);
+
+                    ***The Magical Dp Framework***
+
+Form 1:-dp(idx,x)->y , t for [idx...N] if prev x.
+ Take and not take at a level. Find the best from both the choices.
+Formula for Time complexity Calculation
+TC:-number of states*(1+avg number of trans. per state)
+Printing dp solution:-when function given true value print the value at that step.
+Form 2:-dp(idx,x)->y, best y storing /ending at idx.
+LIS->what is the best ending at that particular sequence.
+Best LIS ending at level.
+Form 3:-dp(i,j,x)->y , best y for ( A[i..N] B[j..M] )
+Multisequence dp ->LCS of string A & B
+int rec(int i,int j)
+{
+if(i>=n||j>=m)
+return 0;
+if(dp[i][j]!=-1)
+return dp[i][j];
+int res=0;
+res=max(res,rec(i+1,j));
+res=max(res,rec(i,j+1));
+if(a[i]==b[j])
+res=max(res,1+rec(i+1,j+1));
+return dp[i][j]=res;
+}
+Form 4:-dp(L,R,x)->y, best y for A[L..R] 
+LR dp -> Rod cutting problem
+int rec(int l,int r)
+{
+if(l+1==r)
+return 0;
+if(dp[l][r]!=-1)
+return dp[l][r];
+int res=INT_MAX;
+for(int p=l+1;p<=r-1;p++)
+{
+res=min(res,x[r]-x[l]+rec(l,p)+rec(p,r));
+}
+return dp[l][r]=res;
+}
+Form 5:-dp(config)->win/lose , the current game pos-> win /lose
+Game Dp
+
+
+***Digit DP***
+Count of Integers x in range l to r such that x is good 
+x is good if 
+1.l<=x<=r
+2.mn_sum<=digit_sum(x)<=mx_sum.
+
+Common Pattern in digit dp problem 
+Step 1:-There will be range of number 
+Step 2:-Some constraint for that number.
+Solution:
+class Solution {
+public:
+    long long M=1e9+7;
+    long long mn,mx;
+    long long dp[401][24][2];
+    long long rec(string &s,int sum,int idx,bool smaller)
+    {
+      
+        if(idx==s.size())
+        {
+            if(sum>=mn&&sum<=mx)
+                return 1;
+            else
+                return 0;
+        }
+        if(dp[sum][idx][smaller]!=-1)
+            return dp[sum][idx][smaller];
+        long long res=(rec(s,sum,idx+1,smaller?smaller:(s[idx]!='0')))%M;
+        if(smaller)
+        {
+            for(int i=1;i<=9;i++)
+            {
+                res+=rec(s,sum+i,idx+1,smaller)%M;
+            }
+        }
+        else
+        {
+            long long diff=s[idx]-'0'-1;
+            for(int i=1;i<=diff;i++)
+            {
+                res+=rec(s,sum+i,idx+1,1)%M;
+            }
+            if(s[idx]!='0')
+                res+=rec(s,sum+diff+1,idx+1,0)%M;
+        }
+        return dp[sum][idx][smaller]=res;
+    }
+    int check(string &s)
+    {
+        int res=0;
+        for(int i=0;i<s.size();i++)
+        {
+            res+=s[i]-'0';
+        }
+        if(mn<=res&&mx>=res)
+            return 1;
+        else
+            return 0;
+    }
+    int count(string num1, string num2, int min_sum, int max_sum) {
+        mn=min_sum;
+        mx=max_sum;
+        memset(dp,-1,sizeof(dp));
+        int resa=rec(num2,0,0,0)%M;
+        memset(dp,-1,sizeof(dp));
+        int resb=rec(num1,0,0,0)%M;
+        return (resa-resb+check(num1)+M)%M;
+    }
+};
+                        ***Longest Increasing Subsequence***
+
+
+int LIS(vector<int>&a)
+{
+ vector<int>dp;
+ for(int x:a)
+ {
+   int pos=lower_bound(dp.begin(),dp.end(),x)-dp.begin();
+   if(pos==dp.size())
+   {
+     dp.push_back(x);
+   }
+   else
+   {
+    dp[pos]=x;
+    }
+ }
+ return dp.size();
+}
+
+

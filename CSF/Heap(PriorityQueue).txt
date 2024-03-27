@@ -1,0 +1,63 @@
+Identification:-k th smallest or kth largest O(nlogn)->O(nlogk)
+
+                                    ***Min Heap:- k+largest***
+
+priority_queue<int,vector<int>,greater<int>>mn_hp; //first element is minimum element in whole queue
+
+
+                                    ***Max Heap:- k+smallest***
+
+priority_queue<int>mx_hp;//first element is maximum element in whole queue
+
+1.kth smallest element
+
+priority_queue<int>mx_hp;
+for(int i=0;i<size;i++)
+{
+mx_hp.push(arr[i]);
+if(mx_hp.size()>k)
+mx_hp.pop();
+}
+return mx_hp.top();
+
+2.k largest elements in Array
+
+priority_queue<int,vector<int>,greater<int>>mn_hp;
+for(int i=0;i<size;i++)
+{
+mn_hp.push(arr[i]);
+if(mn_hp.size()>k)
+mn_hp.pop();
+}
+while(mn_hp.size()>0)
+{
+cout<<mn_hp.top()<<" ";
+mn_hp.pop();
+}
+
+3.Sort a k sorted Array
+
+same as 1st problem
+just store in a vector
+
+4.k closest Number(x,k)
+based on mx_hp
+using pair<diff=arr[i]-x,arr[i]>p;
+
+5.Top k frequent numbers
+ based on mn_hp
+ using pair<freq[arr[i]],arr[i]>p;
+
+6.Frequency sort
+ Similar to previous problem just it uses mx_hp
+ using pair<freq[arr[i]],arr[i]>p;
+
+7.k closest points to origin
+ based on mx_hp
+ using pair<dis(x,y),pair<x,y>>p;
+
+8.Connect Ropes
+ based on mn_hp
+ 
+9.sum of elments(k1th smallest,k2 smallest)
+ based on mx_hp

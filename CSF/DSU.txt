@@ -1,0 +1,71 @@
+                                                       ***DSU->Disjoint Sets Union***
+Using by Rank and Path Compression and by size
+
+class DSU {
+public:
+    vector<int> parent;
+    vector<int> rank;
+    vector<int> siz;
+
+public:
+    DSU(int n) {
+        rank = vector<int>(n);
+        parent = vector<int>(n);
+        siz =vector<int>(n);
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+            siz[i]=1;
+        }
+    }
+
+public:
+    int findPar(int u) {
+        if (parent[u] == u) return u;
+        return parent[u] = findPar(parent[u]);
+    }
+
+public:
+    void Union(int u, int v) {
+        u = findPar(u);
+        v = findPar(v);
+
+        if (rank[u] < rank[v]) {
+            parent[u] = v;
+        } else if (rank[u] > rank[v]) {
+            parent[v] = u;
+        } else {
+            rank[u]++;
+            parent[v] = u;
+        }
+    }
+
+public:
+    void UnionSize(int u,int v){
+        u = findPar(u);
+        v = findPar(v);
+        if (u==v) return ;
+        if (siz[u] > siz[v]) {
+            parent[v] = u;
+            siz[u] += siz[v];
+        } else {
+            parent[u]=v; 
+            siz[v] += siz[u];
+        } 
+     }
+            
+public:
+    bool sameSet(int u, int v) {
+        u = findPar(u);
+        v = findPar(v);
+
+        if (u == v) return true;
+        return false;
+    }
+};
+
+how to access->
+DSU uf(n+1);
+now you can access using dot opertaor
+uf.Union(u,v);
+uf.sameSet(u,v);

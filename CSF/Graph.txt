@@ -1,0 +1,240 @@
+Graph representation
+
+Adjacency List-
+N=no. of nodes
+vector<vector<pair<int,int>>>adj(N);
+           or
+vector<pair<int,int>>adj[N];
+for(int i=0;i<edges;i++)
+{
+int v,u,wt;
+cin>>v>>u>>wt;
+adj[u].push_back({v,wt});
+adj[v].push_back({u,wt});
+}
+
+
+Traversal Technique-
+
+DFS-
+
+vector<int>adj[N];
+bool vis[N];
+memset(vis,0,sizeof(vis));
+void dfs(int v)
+{
+vis[v]=true;
+for(int child:adj[v])
+{
+if(vis[child]==false)
+dfs(child);
+}
+}
+
+for(int i=1;i<=N;i++)
+{
+if(vis[i]==false)
+{
+dfs(i);
+}
+}
+
+                                                          ***Bredth for Search ***
+
+queue<int>q;
+q.push(src);//Put the source node in queue from where you want to start bfs
+vis[src]=true;//Mark visited source node
+while(!q.empty())
+{
+  auto cur_node=q.front();
+  q.pop();
+  for(auto node : adj[cur_node] )
+   {
+        if( !vis[node] ){
+          vis[node]=true;
+          q.push(node);
+        }
+    }
+}
+
+                                                          *** Bipartite Graph ***
+A Bipartite is a graph whose vertices can be divided into two independent sets, U and V such that every edge (u, v) either connects a vertex from U to V or a vertex from V to U.
+We can also say that there is no edge that connects vertices of same set.
+A bipartite graph is possible if the graph coloring is possible using two colors such that vertices in a set are colored with the same color.
+Note that it is possible to color a cycle graph with even cycle using two colors.
+
+
+                                                          ***Graph Coloring Problem***
+
+Chromatic Number--> Mininum number of color requried to color all nodes of a graph such that no two adjacent node have same color.
+
+int vertex,edge;
+cin>>vertex>>edge;
+vector< vetor<int> > adj(vertex);
+for(int i=0; i<edge; i++){
+int x ,y;
+cin >>x >>y;
+adj[x].push_back(y);
+adj[y].push_back(x);
+}
+int coloured[vertex];//resulting_colour_for_each_node
+bool colour[vertex];//available_colour
+coloured[0]=0;
+for(int i =0; i< vertex ;i++)
+coloured[i]=-1;
+for(int i =0; i < v ;i++)
+colour[i]=false;
+int cn=0;// chromatic number
+for(int i=1; i<vertex;i++)
+{
+  for(auto x:adj[i]){
+      if(coloured[x]!=-1){
+           colour[coloured[x]]=true;
+         }
+     }
+    int cr;//current colour that is going to apply on current node
+   for(cr=0;cr<vertex;cr++){
+       if(colour[cr]==false){
+           break;
+        }
+      }
+    coloured[i]=cr;
+    cn=max(cr+1,cn);
+    for( auto x : adj[i]){
+         if(coloured[x]!=-1){
+             colour[coloured[x]]=false;
+           }
+     }
+   }
+   cout<<cn<<endl;
+   for(int i=0;i<vertex;i++)
+   cout<<coloured[i]<<" ";
+   cout<<endl;
+
+                           
+
+
+                             ***Shortest Path in Undirected Graph with unit weights***
+
+vector<int>findSP(vector<vector<int>>&adj,int node,int src)
+{
+
+    vector<int>dis(node,INT_MAX);
+    dis[src]=0;
+    queue<int>q;
+    q.push(src);
+    while(!q.empty())
+    {
+      int cur=q.front();
+      q.pop();
+      for(int it:adj[cur])
+      {
+         if(dis[it]>dis[cur]+1)
+          {
+             dis[it]=dis[cur]+1;
+             q.push(it);
+          }
+      }
+    }
+   return dis;
+}
+
+                               ***Shortest Path in Directed acyclic Graph***
+
+#define INF INT_MAX;
+
+void topohelp(int src, vector<pair<int,int>>adj[],vector<bool>&vis, stack<int>&sk)
+{
+   vis[src]=true;
+   for( pair<int,int> it:adj[src]) {
+       int cur=it.first;
+       if(vis[cur]==false)
+       {
+          topohelp(cur,adj,vis,sk);
+       }
+    }
+    sk.push(src);
+}
+
+stack<int> toposort( vector<pair<int,int>>adj[], int node)
+{
+   stack<int>sk;
+   vector<bool>vis(node,false);
+   for(int i=0;i<node;i++) {
+      if(vis[i]==false)
+      {
+         topohelp(i,adj,vis,sk);
+       }
+   }
+   return sk;
+}
+
+vector<int>findSP(vector<pair<int,int>>adj[], int node ,int src){
+     vector<int>dis(node,INF);
+     dis[src]=0;
+     stack<int>sk=toposort(adj,node);
+     while(!sk.empty())
+     {
+        int cur=sk.top();
+        sk.pop();
+        if(dis[cur]!=INF)
+        {
+            for(pair<int,int> it:adj[cur])
+            {
+               if(dis[cur]+it.second<dis[it.first]) {
+                     dis[it.first]=dis[cur]+it.second;
+                 }
+             }
+         }
+      }
+      return dis;
+}
+
+                               ***Shortest Path using Dijkstra Algorithm (non-negative weight)***
+
+#define INF INT_MAX
+typedef pair<int,int>P;
+vector<int> dijkstra( vector<pair<int,int>>adj[],int v, int src)
+{
+      vector<int> dis(v,INF);
+      dis[src]=0;
+      priority_queue<P,vector<P>,greater<P>>pq;
+      pq.push({0,src});
+      while(!pq.empty())
+      {
+          auto cur=pq.top();
+          int parent= cur.second;
+          int parentDis=cur.first;
+          pq.pop();
+          for(auto it:adj[parent]){
+              int child=it.first;
+              int parentChildDis=it.second;
+              if(dis[child]>parentDis+parentChildDis){
+                  dis[child]=parentDis+parentChildDis;
+                  pq.push({dis[child],child});
+               }
+           }
+        }
+        return dis;
+}
+
+                                                       *** Spanning Tree ***
+
+Spanning Tree -->A spanning tree is a subset of Graph G, such that all the vertices are connected using minimum possible number of edges.
+-->How many maximum number of edge can be remove from a vertex such that the graph is spanning tree== number connected components after removing that particular vertex.
+
+Lets say degree of vertex in a spanning tree is d then d must satisfy following condition
+1.d<=degree[i]
+2.d>=no. of connected component.
+
+                          ***Topological Sorting ***
+It is only possible in directed graph.
+For any edge between u and v like u--->v , u comes before v in topological sort.
+
+Indegree of a vertex is defined as the number of incoming edges incident on a vertex in a directed graph.
+
+***List of edges in cycle=List of edges -List of bridges***
+Bridges->when you remove bridges then the graph will divide into two components.
+Edges of cycle are not bridges.
+-->List of bridges can be found  with the help of Tarjan's Algorithm.
+*** Tarjan's Algorithm ***

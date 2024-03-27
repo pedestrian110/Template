@@ -1,0 +1,74 @@
+Queries on trees
+1.Merge Smaller into Bigger (Dp Optimizatio Technique)
+2.Mo's Algorithm on trees
+3.Centroid Decomposition
+4.Heavy-Light Decomposition
+Query on Path from a->b
+Query on subtree
+
+***Euler tour tree(ETT)***
+It is a method for representing a rooted undirected tree as a number sequence.
+
+int timer;
+int startTime[100],terminateTime[100],FT[100];//flatting array
+vector<int>arr[100];
+void dfs(int node,int parent)
+{
+       startTime[node]=timer;
+       FT[timer]=node;
+       timer++;
+       for(int childe:arr[node])
+        {
+               if(child!=parent)
+                { 
+                    dfs(child,node);
+                }
+          }
+          terminateTime[node]=timer;
+          FT[timer]=node;
+          timer++;
+}
+int main()
+{
+          int n,a,b;
+          cin>>n;
+          for(int i=1;i<n;i++)
+          {
+           cin>>a>>b;  
+           arr[a].push_back(b );
+           arr[b].push_back(a); 
+           }
+           timer=1;
+           dfs(1,-1);
+}
+
+-->with the help of startTime and TerminateTime of a node we can calculate how many and which are the nodes present in the subtree of the node with the help of Flatting array FT.       
+
+                                                             ***DP on Trees***
+
+General Idea:
+1.Store some info for each node.
+2.Compute this info for current node by combining the info for children (dfs).
+
+This is the way you should write dp on trees -->
+
+vector<vector<int>>adj(200005);
+vector<int>l(200005),r(200005);
+int dp[200005][2];
+void dfs(int node, int parent)
+{
+    for(auto u:adj[node])
+    {
+        if(u==parent)
+        continue;
+        dfs(u,node);
+
+    }
+    for(auto u:adj[node])
+    {
+         if(u==parent)
+         continue;
+         dp[node][0]+=max(abs(l[node]-l[u])+dp[u][0],abs(l[node]-r[u])+dp[u][1]);
+         dp[node][1]+=max(abs(r[node]-l[u])+dp[u][0],abs(r[node]-r[u])+dp[u][1]);
+    }
+}

@@ -1,0 +1,29 @@
+                                                  ***Comparator function***
+
+bool cmp(pair<char,int>&A,pair<char,int>&B)
+{
+    if(A.second!=B.second)
+    return A.second>B.second;
+    return A.first<B.first;
+}
+
+                                                  ***Implementing tuple***
+
+tuple<int,int,int>t=make_tuple(a,b,c);
+
+Accessing tuple
+
+get<0>(t),get<1>(t),get<2>(t)
+                                   ***Searching and deleting an elelment in fixed size multiset***
+
+Multiset based problem-->you can use to store fixed number of elment and also with the help of find function you can search for an element then also erase that element which is not possible in min heap since you can just pop out top elment in min heap
+
+                                             ***Lower and Upper Bound***
+
+lower_bound(x)-->first element which is greater than or equal to x.
+upper_bound(x)-->first element which is greater than x.
+
+This type of problem can be solved with the help of binary search
+a[i]+a[j]<=target or a[i]+a[j]>=target
+step 1:- choose a[i]
+step 2:- choose a[j] with the help of binary search
