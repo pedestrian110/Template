@@ -1,0 +1,440 @@
+***struct***
+1.struct keyword is optional in c++
+2.In c struct you can only define variable but not function
+3.private,public is not possible in c
+struct book
+{
+private://only access in this struct
+  int bookid;
+  char title[20];
+  float price;
+public://this can be access anywhere
+  void input()
+  {
+    cout<<"Enter bookid, title and price"<<endl;
+    cin>>bookid>>title>>price;//member function can be access without dot operator
+  }
+  void display()
+  {
+   cout<<bookid<<" "<<title<<" "<<price<<endl;
+  }
+};
+int main()
+{
+ book b1;
+ b1.input();
+ b1.display();
+}
+
+***class***
+the only difference between structure and class is that,
+-the members of struct are by default public and
+-the members of class are by default private.
+
+membership label--> class name + scope resolution operator(::)
+-->you can define member function outside of class as well
+-->inside class a function is by default inline
+but outside you have to use inline keywords.
+-->class is description of object
+-->object is instance of class
+-->collection of instance member variable of an object is called state.
+state should be change with the help of method.
+class Complex
+{
+private:
+int a,b;//instance member variable
+public:
+void set_data(int,int);//instance member function
+};
+void Complex::set_data(int x,int y)
+{
+a=x;
+b=y;
+}
+
+***Static Members***
+static local variable
+-->they are by default initialized to zero
+-->their lifetime is throughout the program
+void fun()
+{
+static int x;//it get memory when program start
+int y;//it will create when fun is called and destroy after fun complete
+}
+static member variable or class member variable
+-->declared inside the class body
+-->it does not belong to any object but to the whole class
+-->there will be only one copy of static member variable for the whole class
+-->defined outside the class
+class Account
+{
+private:
+int balance;
+static float roi;//this is the declaration only you have to define outside
+public:
+void setBalance (int b)
+{
+balance=b;
+}
+static void setRoi(float r)
+{
+roi=r;}
+};
+float Account:: roi=3.5;//definition of static member variable
+
+how to access static variable without having any object of class?
+Account::setRoi(4.5);
+
+static member function or class member function
+-->they can be invoked with or without object
+-->they can only access static members of the class
+
+***Constructors***
+-->it is a member function of a class
+-->name of the constructor is same as the name of the class
+-->it has no return type,so can't use return
+-->it must be an instance member function that is it can never be static
+
+class Complex
+{
+private:
+int a,b;
+public:
+Complex(int x,int y)
+{
+a=x;
+b=y;
+}
+Complex()
+{
+cout<<"Constructor call hua";
+}
+Complex(Complex &c)//without reference the same constructor repetedly call it will create object each time and again again object inilize.
+{
+a=c.a;
+b=c.b;
+}
+};
+void main()
+{
+Complex c1,c2;
+}
+How to call constructor?
+-->Constructor is implicitly invoked when an object is created.
+-->Constructor is used to solve problem of initialization.
+default constructor:-if you have not define any constructor in class defination.Compiler will make a constructor of without argument.
+
+Complex c4=c1;or Complex c4(c1);
+-->NO Constructor in class then Compiler make two constructor default and copy constructor
+-->if we not make copy constructor compiler will make copy constructor
+
+***Destructors***
+-->it is an instance member funtion of a class
+-->name of the destructor is same as the name of a class but preceded by tilde(~)
+-->it can never be static
+-->has no return type
+-->Destructor takes no argument (No overloading is possible)
+
+class Complex
+{
+private:
+int a,b;
+public:
+~Complex()
+{
+}
+};
+-->it is invoked implicitly when object is going to destroy
+-->destructor is last funtion before object get destroy
+why destructor?
+-->it should be defined to release resources allocated to an object
+-->let's a member variable is pointer in an object the if the object get destroy then resources allocated to pointer is not get release so you need explicitly release the resources allocated to pointer
+
+***Operator Overloading***
+class Complex
+{
+private:
+int a,b;
+public:
+void setData(int x,int y)
+{
+a=x;
+b=y;
+}
+Complex operator +(Complex c)
+{
+Complex tmp;
+tmp.a=a+c.a;
+tmp.b=b+c.b;
+return tmp;
+}
+Complex operator -()
+{
+Complex tmp;
+tmp.a=-a;
+tmp.b=-b;
+return tmp;
+}
+};
+void main()
+{
+Complex c1,c2,c3,c4;
+c1.setData(3,4);
+c2.setData(5,6);
+c3=c1+c2;
+c4=-c3;
+
+}
+when an operator is overloaded with multiple jobs it is known as opertor overloading.
+
+class Integer
+{
+private:
+int x;
+void setData(int a)
+{
+x=a;
+}
+Integer operator++()//pre increment
+{
+Integer i;
+i.x=++x;
+return i;
+}
+Integer operator++(int)//post increment
+{
+Integer i;
+i.x=x++;
+return i;
+}
+};
+void main()
+{
+Integer i1,i2;
+i1.setData(3);
+i2=++i1;
+i2=i1++;
+}
+
+***Friend Function***
+-->Friend function is not a member functio of a class to which it is friend
+-->Friend function is declared in the class with friend keyword
+-->it must be defined outside the class to which it is friend
+-->Friend function can access any member of the class to which it is friend
+-->Friend function cannot access memebers of the class directly
+-->it has no caller objext
+-->it should not be defined with membership label
+
+class Complex
+{
+private:
+int a,b;
+public:
+void setData(int x,int y)
+{
+a=x;
+b=y;
+}
+friend void fun(Complex);
+};
+void fun(Complex c)
+{
+cout<<c.a+c.b<<endl;
+}
+void main()
+{
+Complex c1;
+fun(c1);
+}
+-->Friend function can become friend to more than one class
+class B;
+class A
+{
+private:
+int a;
+public:
+void setData(int x)
+{a=x;}
+friend void fun(A,B);
+};
+class B
+{
+private:
+ int b;
+public:
+void setData(int y)
+{b=y;}
+friend void fun(A,B);
+};
+void fun(A o1 , B o2)
+{
+cout<<o1.a+o2.b<<endl;
+}
+void main()
+{
+A obj1;
+B obj2;
+obj1.setData(2);
+obj2.setData(3);
+fun(obj1,obj2);
+}
+-->Overloading of operators as a friend function
+class Complex
+{
+private:
+int a,b;
+public:
+void setData(int x,int y)
+{
+a=x;
+b=y;
+}
+friend Complex operator +(Complex,Complex);
+};
+Complex operator+(Complex X, Complex Y)
+{
+Complex tmp;
+tmp.a=X.a+Y.a;
+tmp.b=X.b+Y.b;
+return tmp;
+}
+void main()
+{
+Complex c1,c2,c3;
+c1.setData(3,4);
+c2.setData(5,6);
+c3=c1+c2;
+}
+-->Overloading of insertion and extraction opertators
+class Complex
+{
+private;
+int a,b;
+public:
+void setData(int x,int y)
+{
+a=x;
+b=y;
+}
+friend ostream& operator<<(ostream&,Complex);
+friend istream& operator>>(istream&,Complex&);
+};
+ostream& operator<<(ostream &dout,Complex C)
+{
+cout<<C.a<<" "<<C.b;
+return dout;
+}
+istream& operator>>(istream &din, Complex &C)
+{
+cin>>C.a>>C.b;
+return din;
+}
+void main()
+{
+Complex c1;
+cin>>c1;
+cout<<c1;//operator<<(cout,c1);
+
+-->Member function of one class can become friend to another class
+class A
+{
+public:
+void fun()
+{...}
+void foo()
+{...}
+};
+class B
+{
+//friend class A;
+friend void A::fun();
+friend void B::foo();
+};
+
+***Inheritance***
+It is a process of inheriting properties and behaviours of existing class into a new class.
+Existing class = old class = Parent class
+New class = Child class = Derived class
+
+class Base_Class
+{
+};
+class Derived_Class: Visibility_Mode Base_Class
+{
+};
+class Car
+{
+};
+class SportsCar:public Car
+{
+};
+Types of Inheritance
+1.Single Inheritance
+class A
+{
+};
+class B:public A
+{
+};
+
+2.Multilevel Inheritance
+class A
+{
+};
+class B:public A
+{
+};
+class C:public B
+{
+};
+3.Multiple Inheritance
+class A1
+{
+};
+class A2
+{
+};
+class B:public A1,public A2
+{
+};
+4.Hierarchical Inheritance
+class A
+{
+};
+class B1:public A
+{
+};
+class B2:public A
+{
+};
+
+Visibility Modes
+Private
+Protected
+Public
+
+class A
+{
+private:
+int a;
+protected:
+void setValue(int k)
+{
+a=k;}
+};
+class B:public A
+{
+public:
+void setData(int x)
+{
+setValue(x);}
+};
+void main()
+{
+B obj;
+}
+-->object of child class can not access private and protected
+
+***Constructor in Inheritance***
+we need to make constructor in child class if you already define a constructor in parent class otherwise you will get error.
+Early Binding-->if you are accessing function by object then compiler will call function based on the data type of object , similarly for pointer it will call based on the data type of pointer.
