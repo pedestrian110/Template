@@ -570,3 +570,109 @@ void fun()
 
 -->A class containing pure virtual function is an abstract class.
 -->We can not instantiate abstract class.
+
+***Template***
+
+-->the keyword template is used to define function and class template
+-->it is a way to make your function or class generalize as far as data type is concern.
+-->Function template is also known as generic function
+-->this is for avoiding method overloading based on data type
+
+template<class T> T big(T a, T b)
+{
+      if(a>b)
+            return (a);
+      else 
+            return (b);
+}
+int main()
+{
+      cout<<big(1,2)<<endl;
+      cout<<big(1.2,1,9)<<endl;
+}
+
+Here T is place holder which will be replace by appropriate data type based on function calling.
+
+-->class template is also known as generic class
+
+template<class T> class class_name
+{
+...
+};
+int main()
+{
+  class_name <name_of_data_type>obj;
+}
+
+***File Handling***
+input output stream class(ios)
+
+                         ios
+         istream                     ostream
+                       iostream
+            ifstream             ofstream
+                        fstream
+     istream_withassign             ostream_withassign
+-->ios have two child:istream and ostream
+-->istream have three child:istream_withassign , ifstream and iostream
+-->ostream have three child:ostream_withassign , ofstream and iostream
+
+#include<fstream>
+int main()
+{
+ ofstream fout;
+ fout.open("file.txt");
+ fout<<"hello";
+ fout.close();
+}
+
+#include<fstream>
+int main()
+{
+ ifstream fin;
+ char ch;
+ fin.open("file.txt");
+ fin>>ch;
+ while(!fin.eof())
+ {
+   cout<<ch;
+   fin>>ch;
+ }
+ fin.close();
+}
+
+***File Opening Modes***
+ios::in -->input/read
+ios::out-->output/write
+ios::app-->append
+ios::ate-->update
+ios::binary-->binary
+
+-->As a second argument of open() function
+ofstram fout;
+fout.open("file name",file_opening_mode);
+
+***Text mode vs binary mode***
+-->Text mode is the default opening mode
+-->Binary mode can be specified with ios::binary
+-->In text mode special character translation happend but in binary mode as it is written
+
+fout<<"My name is\nMahesh";
+In text mode:-
+My name is
+Mahesh
+In binary mode:-
+My name is\nMahesh
+
+***tellg and tellp***
+
+tellg()
+-->defined in istream class;
+-->its prototype is streampos
+-->return the position of character in the input stream
+-->pos of get pointer
+tellp()
+-->defined in ostream class;
+-->its prototype is streampos
+-->return the position of character in the output stream
+-->pos of put pointer
