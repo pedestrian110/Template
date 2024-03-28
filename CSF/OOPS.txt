@@ -1,4 +1,7 @@
-***struct***
+                                                  ***struct***
+
+
+
 1.struct keyword is optional in c++
 2.In c struct you can only define variable but not function
 3.private,public is not possible in c
@@ -26,7 +29,10 @@ int main()
  b1.display();
 }
 
-***class***
+                                                  ***class***
+
+
+
 the only difference between structure and class is that,
 -the members of struct are by default public and
 -the members of class are by default private.
@@ -52,7 +58,10 @@ a=x;
 b=y;
 }
 
-***Static Members***
+                                                 ***Static Members***
+
+
+
 static local variable
 -->they are by default initialized to zero
 -->their lifetime is throughout the program
@@ -89,7 +98,10 @@ static member function or class member function
 -->they can be invoked with or without object
 -->they can only access static members of the class
 
-***Constructors***
+                                             ***Constructors***
+
+
+
 -->it is a member function of a class
 -->name of the constructor is same as the name of the class
 -->it has no return type,so can't use return
@@ -128,7 +140,10 @@ Complex c4=c1;or Complex c4(c1);
 -->NO Constructor in class then Compiler make two constructor default and copy constructor
 -->if we not make copy constructor compiler will make copy constructor
 
-***Destructors***
+                                                ***Destructors***
+
+
+
 -->it is an instance member funtion of a class
 -->name of the destructor is same as the name of a class but preceded by tilde(~)
 -->it can never be static
@@ -150,7 +165,10 @@ why destructor?
 -->it should be defined to release resources allocated to an object
 -->let's a member variable is pointer in an object the if the object get destroy then resources allocated to pointer is not get release so you need explicitly release the resources allocated to pointer
 
-***Operator Overloading***
+                                            ***Operator Overloading***
+
+
+
 class Complex
 {
 private:
@@ -216,7 +234,10 @@ i2=++i1;
 i2=i1++;
 }
 
-***Friend Function***
+                                                 ***Friend Function***
+
+
+
 -->Friend function is not a member functio of a class to which it is friend
 -->Friend function is declared in the class with friend keyword
 -->it must be defined outside the class to which it is friend
@@ -351,7 +372,10 @@ friend void A::fun();
 friend void B::foo();
 };
 
-***Inheritance***
+                                                ***Inheritance***
+
+
+
 It is a process of inheriting properties and behaviours of existing class into a new class.
 Existing class = old class = Parent class
 New class = Child class = Derived class
@@ -435,10 +459,16 @@ B obj;
 }
 -->object of child class can not access private and protected
 
-***Constructor in Inheritance***
+                                         ***Constructor in Inheritance***
+
+
+
 we need to make constructor in child class if you already define a constructor in parent class otherwise you will get error.
 
-***this pointer**
+                                               ***this pointer**
+
+
+
 
 -->A pointer contains address of an object is called Object pointer.
 -->An object can be access either by its name using dot(.) operator or by pointer using arrow(-->).
@@ -462,7 +492,10 @@ class Box
  }
 };
 
-***new and delete***
+                                              ***new and delete***
+
+
+
 
 SMA->static memory allocation:- memory allocation will decided at compile time
 DMA->Dynamic Memory Allocation:-memory allocation will decided at runtime
@@ -478,7 +511,10 @@ DMA->Dynamic Memory Allocation:-memory allocation will decided at runtime
 delete p;// it will delete the pointed single memory block
 delete []p;// it will delete the pointed array.
 
-***Method Overriding***
+                                             ***Method Overriding***
+
+
+
 class A
 {
 public:
@@ -500,7 +536,10 @@ obj.f1();
 Early Binding-->In case of overriding compiler will bind function when you call function with the help of obj.if you are accessing function by object then compiler will call function based on the data type of object , similarly for pointer it will call based on the data type of pointer.
 
 
-***Virtual function***
+                                              ***Virtual function***
+
+
+
 
 -->Base class pointer can point to the object of any of its descendant class(this can lead to same pointer pointing to different type of class)
 -->But its converse is not true.
@@ -550,7 +589,10 @@ p->f1();//B
 -->vptr points array address
 -->and each array block contain address of each virtual funtion in that particular class or there parent class if tha funtion is not overrided in child class but it is virtual in parent class.
 
-***Abstract Class***
+                                              ***Abstract Class***
+
+
+
 
 Pure Virtual function-->A do nothing function is pure virtual function.
 -->You can not create an object of class which contain pure virtual function.
@@ -571,7 +613,10 @@ void fun()
 -->A class containing pure virtual function is an abstract class.
 -->We can not instantiate abstract class.
 
-***Template***
+                                                  ***Template***
+
+
+
 
 -->the keyword template is used to define function and class template
 -->it is a way to make your function or class generalize as far as data type is concern.
@@ -604,7 +649,10 @@ int main()
   class_name <name_of_data_type>obj;
 }
 
-***File Handling***
+                                                  ***File Handling***
+
+
+
 input output stream class(ios)
 
                          ios
@@ -641,7 +689,10 @@ int main()
  fin.close();
 }
 
-***File Opening Modes***
+                                                  ***File Opening Modes***
+
+
+
 ios::in -->input/read
 ios::out-->output/write
 ios::app-->append
@@ -652,7 +703,10 @@ ios::binary-->binary
 ofstram fout;
 fout.open("file name",file_opening_mode);
 
-***Text mode vs binary mode***
+                                                 ***Text mode vs binary mode***
+
+
+
 -->Text mode is the default opening mode
 -->Binary mode can be specified with ios::binary
 -->In text mode special character translation happend but in binary mode as it is written
@@ -664,7 +718,10 @@ Mahesh
 In binary mode:-
 My name is\nMahesh
 
-***tellg and tellp***
+                                                    ***tellg and tellp***
+
+
+
 
 tellg()
 -->defined in istream class;
