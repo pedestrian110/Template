@@ -884,3 +884,141 @@ i1=p1;
 
 -->Casting operator
 
+                                  ***Exception Handling***
+
+
+-->Exception is any abnormal behaviour, run time error.
+-->C++ provides a built-in error handling mechanism that is called exception handling
+-->Using exception handling, you can more easily manage and respond to runtime errors.
+
+try-->Program statements that you want to monitor for exceptions are contained in a try block.
+throw-->if any exception occurs within the try block,it is thrown using throw.
+catch-->The exception is caught ,using catch and processed.
+
+syntax-->
+
+try{
+}
+catch(type1 arg){
+}
+catch(type2 arg){
+}
+...
+catch(typeN arg){
+}
+
+int main()
+{
+   try{
+       if(k==1)
+            throw 1;
+       if(k==2)
+            throw 2;
+       cout<<"No throw statement run"<<endl;
+    }
+   catch(int e){
+       cout<<"Exception "<<e<<" occur"<<endl;
+    }
+   cout<<"End of program"<<endl;
+}
+ 
+-->If you don't need access to the exception itself specify only type in the catch clause- arg is optional.
+-->Any type of data can be caught, including classes that you create.
+
+                             ***Dynamic Constructor***
+
+-->Constructor can allocate dynamically created memory to the object
+-->Thus object is going to use memory region, which is dynamically created by constructor.
+
+class Demo
+{
+  private:
+  int a;
+  int *p;
+  public:
+  Demo(int k)
+  {
+   p=new int;
+   *p=k;
+  }
+};
+
+
+                             ***namespace***
+
+Header file-->In header file only declaration of function or identfiers is present.
+namespace-->It is a group of declaration
+-->this will avoid nameconflict.
+-->namespace is a container for identifiers
+
+namespace Myspace{
+}
+-->namespace definition doesn't terminates with a semicolon like in class definition
+-->namespace definition must be done at global scope or nested inside another namespace
+-->You can use an alias name for your namespace name, for ease of use
+ namespace ms=Myspace;
+-->you can not instance of namespace
+-->A namespace definition can be continued and extended over multiple files.
+
+#include<iostream>
+using namespace std;
+namespace Myspace{
+     int a;
+     int f1();
+     class A
+     {
+       public:
+              void f2();
+     };
+}
+int Myspace::f1(){
+cout<<"Hi"<<endl;
+}
+void Myspace::A::f2()
+{
+cout<<"HH"<<endl;
+}
+using namespace Myspace;
+int main()
+{
+     a=5;
+}
+
+
+                                ***Virtual Destructor***
+for late binding
+class A
+{
+virtual ~A()
+};
+
+                               ***Nested class***
+
+
+
+-->class inside a class is called nested class
+-->A nested class is a member and as such has the same access rights as any other member.
+-->the members of an enclosing class have no special access to members of a nested class, the usual access rules shall be obeyed.
+
+class A
+{
+  private:
+  int a;
+  public:
+   class B{
+    private:
+     int x;
+    public:
+      int f(){}
+    };
+   
+  B object;
+  
+    void fun(){
+    }
+};
+  
+int main()
+{
+   A::B obj;
+}
