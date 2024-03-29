@@ -733,3 +733,23 @@ tellp()
 -->its prototype is streampos
 -->return the position of character in the output stream
 -->pos of put pointer
+
+                                                  ***Initializers list***
+
+
+-->Initializer list is used to initialize data memebers of a class
+-->the list of members to be intialized is indicated with constructor as comma separated list followed by a colon.
+-->Since const varible should be inilize at the time of defination and since in class you can not inilize, for this situation you need to use initializer list.
+-->There are situations where initialization of data members inside constructor doesn't work and Initializer list must be used.
+-->For intialization of non static const data members.
+-->For intialization of reference members. 
+class Demo
+{
+private:
+int a,b;
+const int x;
+int &y;
+public:
+Demo(int &n):a(5),b(6),x(5),y(n)
+{}
+};
