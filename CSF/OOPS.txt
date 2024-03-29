@@ -734,7 +734,7 @@ tellp()
 -->return the position of character in the output stream
 -->pos of put pointer
 
-                                                  ***Initializers list***
+                                               ***Initializers list***
 
 
 -->Initializer list is used to initialize data memebers of a class
@@ -753,3 +753,134 @@ public:
 Demo(int &n):a(5),b(6),x(5),y(n)
 {}
 };
+                                                 
+
+                                          ***Deep Copy and Shallow Copy***
+
+
+How we can create a copy of object?
+-->Copy Constructor
+-->Implicit copy assignment operator
+
+Demo d1;
+Demo d2=d1;//Copy Constructor
+ or 
+Demo d2;
+d2=d1;//Implicit copy assignment operator
+
+ShallowCopy
+-->Creating copy of object by copying data of all member variables as it is.
+-->ShallowCopy should not be allowed  in case of there is a pointer in an object and that pointer is accessing some mermory outside otherwise it will share same memory resources
+DeepCopy
+-->Creating an object by copying data of another object along with the values of memory resources resides outdise the object but handled by that object.
+
+class Demo
+{
+ private:
+ int a,b;
+ int *p;
+ public:
+ Demo()
+ {
+  p=new int;
+  }
+ Demo(Demo &d)
+ {
+  a=d.a;
+  b=d.b;
+  p=new int;
+  *p=*(d.p);
+ }
+~Demo()
+{
+ delete p;
+}
+};
+Dangling pointer-->pointers that do not point to a valid object of the appropriate type.
+
+-->class type or Non-premitive type
+
+                                ***Type Conversion***
+
+
+1.Primitive Type to class type thorugh constructor
+class Complex
+{
+ private:
+ int a,b;
+ public:
+ Complex(){}
+ Complex(int k)
+ { a=k;b=0;}
+};
+int main()
+{
+ Complex c1;
+ int x=5;
+ c1=x;//it means c1.Complex(x)
+}
+
+2.class type to primitive type
+-->class type to primitve type can be implemented with casting opertor
+operator type()
+{
+...
+return (type-data);
+}
+
+class Complex
+{
+ private:
+ int a,b;
+ public:
+ operator int()
+ {
+  return(a);
+  } 
+};
+int main()
+{
+ Complex c1;
+ int x;
+ x=c1;
+}
+
+3.One class type to another class type 
+it can be done in both ways
+-->Constructor
+class Product
+{
+ private:
+ int m,n;
+ public:
+ int getM()
+ {
+  return m;
+  }
+ int getN()
+ {
+  return n;
+ }
+};
+class Item
+{
+ private:
+ int a,b;
+ public:
+ Item(){}
+ Item(Product p)
+ {
+  a=p.getM();
+  b=p.getN();
+  }
+};
+
+int main()
+{
+Item i1;
+Product p1;
+i1=p1;
+}
+
+-->Casting operator
+
