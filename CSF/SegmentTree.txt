@@ -406,7 +406,202 @@ int main()
 
 }
 
+Problem 1: Even and odd queries
+Sol:-
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long ;
+struct Node {
+    ll ct_even;
+    ll ct_odd;
+};
+vector<Node> tree;
+vector<ll> A;
+void build (ll node, ll start, ll end ) {
+    if (start == end) {
+       if ( ( ( A[start] % 2 == 0 ) ? 1 : 0 ) ) {
+       tree[node].ct_odd = 0;
+       tree[node].ct_even = 1;
+       }
+       else {
+        tree[node].ct_odd = 1;
+        tree[node].ct_even = 0;
+       }
+       return ;
+    }
+    ll mid = (start + end) / 2;
+    build (2 * node, start, mid);
+    build (2 * node + 1, mid + 1, end);
+    tree[node].ct_even = tree[2 * node + 1].ct_even + tree[2 * node].ct_even;
+    tree[node].ct_odd = tree[2 * node + 1].ct_odd + tree[2 * node].ct_odd;
+}
+void update ( ll node, ll start, ll end, ll i, ll x) {
+    if ( start == end ) {
+         if ( x % 2 == 0 ) {
+           tree[node].ct_even = 1;
+           tree[node].ct_odd = 0;
+         }
+           
+         else {
+           tree[node].ct_odd = 1;
+           tree[node].ct_even = 0;
+         }
+        A[i] = x;
+        return ;
+    }
+    ll mid = ( start + end ) / 2;
+    if ( i <= mid ) {
+        update ( 2 * node, start, mid, i, x );
+    }
+    else {
+        update ( 2 * node + 1, mid + 1, end, i, x );
+    }
+    tree[node].ct_even = tree[ 2 * node + 1 ].ct_even + tree[ 2 * node ].ct_even;
+    tree[node].ct_odd = tree[ 2 * node + 1 ].ct_odd + tree[ 2 * node ].ct_odd;
+}
+Node query ( ll node, ll start, ll end, ll lq, ll rq) {
+     if ( start >= lq && end <= rq ) {
+        return tree[node];
+     }
+     if ( start > rq || end < lq ) {
+        Node zero;
+        zero.ct_even = 0;
+        zero.ct_odd = 0;
+        return zero;
+     }
+     ll mid = ( start + end ) / 2;
+     Node res_l = query ( 2 * node, start, mid, lq, rq );
+     Node res_r = query ( 2 * node + 1, mid + 1, end, lq, rq );
+     Node res;
+     res.ct_even = res_l.ct_even + res_r.ct_even;
+     res.ct_odd = res_l.ct_odd + res_r.ct_odd;
+     return res;
+}
+int main(){
+    ll n;
+    cin >> n;
+    A.resize (n);
+    tree.resize (4 * n);
+    for (int i = 0; i < n; i++) {
+       cin >> A[i];
+    }
+    build ( 1, 0, n-1 );
+    int q;
+    cin >> q;
+    while (q--) {
+        int op;
+        cin >> op;
+        
+        if (op == 0) {
+            ll x, y;
+            cin >> x >> y;
+            x--;
+            update ( 1, 0, n-1, x, y );
+        }
+        else if (op == 1) {
+            ll l, r;
+            cin >> l >> r;
+            l--, r--;
+            Node res = query ( 1, 0, n-1, l, r);
+            cout << res.ct_even << endl;
+        }
+        else {
+            ll l, r;
+            cin >> l >> r;
+            l--, r--;
+            Node res = query ( 1, 0, n-1, l, r );
+            cout << res.ct_odd << endl;
+        }
+    }
+
+}
+
+Problem 2:First min queries
+Sol:-
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+vector<ll> A;
+vector<ll> tree;
+void build ( ll node, ll start, ll end ) {
+    if ( start == end ) {
+        tree[node] = A[start];
+        return ;
+    }
+    ll mid = ( start + end ) / 2;
+    build (2 * node, start, mid);
+    build (2 * node + 1, mid + 1, end);
+    tree[node] = max( tree[2 * node + 1], tree[2 * node]);
+}
+void update ( ll node, ll start, ll end ,ll i, ll x) {
+    if ( start == end ) {
+        A[start] -= x;
+        tree[node] = A[start];
+        return ;
+    }
+    ll mid = ( start + end ) / 2;
+    if (i <= mid) {
+       update (2 * node, start, mid, i, x);
+    }
+    else {
+        update (2 * node + 1, mid + 1, end, i, x);
+    }
+    tree[node] = max( tree[2 * node + 1], tree[2 * node]);
+}
+ll query (ll node, ll start, ll end,  ll x) {
+    if ( tree[node] < x) {
+        return -1;
+    }
+    if ( start == end ) {
+        return start;
+    }
+    ll mid = ( start + end ) / 2;
+    if ( tree[2 * node] >= x ) {
+        return query ( 2 * node, start, mid, x );
+    }
+    else {
+        return query ( 2 * node + 1, mid + 1, end , x );
+    }
+}
+int main() {
+    ll n, q;
+    cin >> n >> q;
+    A.resize(n);
+    tree.resize(4 * n);
+    for ( int i = 0; i < n; i++ ) {
+        cin >> A[i];
+    }
+    build ( 1, 0 , n-1 );
+    while (q--) {
+        ll x;
+        cin >> x;
+        ll res = query ( 1, 0, n-1, x );
+        if( res >= 0 ) {
+            update ( 1, 0, n-1, res, x );
+        }
+        cout << res + 1 << " ";
+    }
+    cout << endl;
+}
+
 
 -->We have to only consider two things in segement tree
    First is that what we will store at each node
    Second is that how we will merge
+
+Application of Segment Tree
+
+1.Point Update and Range Query
+Desgin a data structure to do some kind of operation
+   Given N size Arr
+       and Q query
+           1 x v-->update pos x with v
+           2 l r-->min of range[l,r] and count of min
+
+2.Range update and point query
+     1 l r v-->for l to r do arr[i]+=v
+     2 x -->find arr[x]
+
+3. 
+   1 x v-->update arr[x]=v
+   2 l r-->find max sum subarray(l,r)
