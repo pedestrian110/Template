@@ -584,6 +584,139 @@ int main() {
     cout << endl;
 }
 
+Problem 3:maximum subarray sum queries
+Sol:-
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long int
+const int N = 200010;
+struct ST
+{
+    ll maxi, lsum, rsum, sum;
+    ST(ll sum = 0, ll maxi = 0, ll lsum = 0, ll rsum = 0) : sum(sum), maxi(maxi), lsum(lsum), rsum(rsum) {}
+};
+
+ST operator+(const ST &A, const ST &B)
+{
+    ST temp;
+    temp.lsum = max(A.lsum, A.sum + B.lsum);
+    temp.rsum = max(B.rsum, B.sum + A.rsum);
+    temp.sum = A.sum + B.sum;
+    temp.maxi = max(max(A.maxi, B.maxi), A.rsum + B.lsum);
+    return temp;
+}
+
+struct segtree
+{
+    vector<ST> tree;
+    segtree(int n = N)
+    {
+        tree.resize(4 * n);
+    }
+
+    void update(int node, int start, int end, int idx, ll val)
+    {
+        if (start == end)
+        {
+            ll x = max(val, 0LL);
+            tree[node] = ST(val, x, x, x);
+        }
+        else
+        {
+            int mid = (start + end) >> 1;
+            if (idx <= mid)
+                update(2 * node, start, mid, idx, val);
+            else
+                update(2 * node + 1, mid + 1, end, idx, val);
+            tree[node] = tree[2 * node] + tree[2 * node + 1];
+        }
+    }
+
+    ll query()
+    {
+        return tree[1].maxi;
+    }
+};
+
+signed main()
+{
+    int n, q;
+    cin >> n >> q;
+
+    segtree T(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        ll val;
+        cin >> val;
+        T.update(1, 0, n - 1, i, val);
+    }
+
+    for (int i = 0; i < q; i++)
+    {
+        int k;
+        ll x;
+        cin >> k >> x;
+        k--;
+        T.update(1, 0, n - 1, k, x);
+        cout << T.query() << "\n";
+    }
+    return 0;
+}
+
+Problem 4: Range queries 2 (Range update and point query)
+Sol:-
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+vector<ll> tree;
+void update (ll node, ll start, ll end, ll l, ll r, ll x) {
+    if(start > r || end < l)
+    return ;
+    if ( start >= l && end <= r ) {
+        tree[node] += x;
+        return ;
+    }
+    ll mid = ( start + end ) / 2;
+    update (2 * node, start, mid, l, r, x);
+    update (2 * node + 1, mid + 1, end, l, r, x);
+}
+ll query (ll node, ll start, ll end, ll i) {
+    if (start == end )
+    return tree[node];
+    ll mid = ( start + end ) / 2;
+    if (i <= mid )
+    return tree[node] + query(2 * node, start, mid, i);
+    return tree[node] + query(2 * node + 1, mid + 1, end, i);
+}
+int main() {
+    int n, q;
+    cin >> n >> q;
+    tree.resize(4 * n);
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        update (1, 0, n-1, i, i, x);
+    }
+    while (q-- ) {
+        int t;
+        cin >> t;
+        if ( t == 1 ) {
+            int i, j, x;
+            cin >> i >> j >> x;
+            i--, j--;
+            update ( 1, 0, n-1, i, j, x );
+        }
+        else {
+            int i;
+            cin >> i;
+            i--;
+            cout << query (1, 0, n-1, i) << endl;
+        }
+    }
+}
+
 
 -->We have to only consider two things in segement tree
    First is that what we will store at each node
