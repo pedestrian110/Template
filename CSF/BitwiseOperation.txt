@@ -17,6 +17,7 @@
 16. __builtin_popcount(x):-the number of ones in the number.
 17. __builtin_parity(x):-the parity(even or odd) of the number of ones.
 18. __bit_width(x)->total number digit from till last one in right.
+19. int(floor(log2(x)) + 1) --> The minimum number of bits needed to represent the number x.
                                                               ***XOR from 1 to n ***
                        
 int computeXOR(int n) 

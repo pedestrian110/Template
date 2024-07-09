@@ -1,4 +1,4 @@
-                                                       ***Plynomial Rolling Hash***
+                                                       ***Polynomial Rolling Hash***
 
 hash(s)=s[0]+s[1]p+s[2]p^2+...+s[n-1]p^(n-1) mod m
 #define mod 1e9+7;
@@ -16,46 +16,40 @@ long long getHash(string key)
  }
 
 
-class RollingHash {
-public:
-       long long mod=1e9+7;
-       long long PreHash[100001];
-       long long inv[100001];
-public:
-      RollingHash(string txt)
-      {
-       long long p=31;
-       long long p_power=1;
-       inv[0]=1;
-       PreHash[0]=(txt[0]-'a'+1);
-       for(int i=1;i<txt.size();i++)
-       {
-          char ch=txt[i];
-          p_power=(p_power*p)%mod;
-          inv[i]=power(p_power,mod-2)%mod;
-          PreHash[i]=(PreHash[i-1]+(ch-'a'+1)*p_power)%mod;
+struct RollingHash {
+       ll mod=1e9+7;
+       ll PreHash[100001];
+       ll inv[100001];
+       RollingHash(string txt) {
+        ll p = 31;
+        ll p_power = 1;
+        inv[0] = 1;
+        PreHash[0] = (txt[0] - 'a' + 1);
+        for (int i = 1; i < txt.size(); i++) {
+            char ch = txt[i];
+            p_power = (p_power * p) % mod;
+            PreHash[i] = (PreHash[i - 1] + (ch - 'a' + 1) * p_power) % mod;
         }
+       }
+       ll power(ll a, ll n) {
+        ll res = 1;
+        while (n) {
+            if (n % 1) {
+                res = (res * a) % mod;
+                n >>= 1;
+                a = (a * a) % mod;
+            }
         }
-private:
-       long long power(long long a,long long n)
-       {
-         long long res=1;
-         while(n)
-          {
-           if(n&1) res=(res*a)%mod;
-           n>>=1;
-           a=(a*a)%mod;
-           }
-          return res;
+        return res;
+       }
+       ll subHash(int l, int r) {
+        int res = PreHash[r];
+        if (l > 0) {
+            res -= PreHash[l - 1];
         }
-public:
-        long long subHash(int l,int r)
-        {
-          int res=PreHash[r];
-          if(l>0) res-=PreHash[l-1];
-          res=(res*inv[l])%mod;
-          return res;
-        }
+        res = (res * inv[l]) % mod;
+        return res;
+       }
 };
 
 Use-> RollingHash prh(txt);
