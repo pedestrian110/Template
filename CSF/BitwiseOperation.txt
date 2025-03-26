@@ -18,7 +18,8 @@
 17. __builtin_parity(x):-the parity(even or odd) of the number of ones.
 18. __bit_width(x)->total number digit from till last one in right.
 19. int(floor(log2(x)) + 1) --> The minimum number of bits needed to represent the number x.
-                                                              ***XOR from 1 to n ***
+
+***XOR from 1 to n ***
                        
 int computeXOR(int n) 
 { 
@@ -40,7 +41,7 @@ int computeXOR(int n)
 } 
 
 
-                                                               ***Iterating Each Bits of a Number x***
+***Iterating Each Bits of a Number x***
 
 unsigned int v;-> count the number of bits set in v
 unsigned int c;-> c accumulates the total bits set in v
@@ -61,7 +62,7 @@ for (c = 0; v; v >>= 1)
 }
 
 
-                                                           ***Traversing each bit and finding number of zero***
+***Traversing each bit and finding number of zero***
 
 
    int ct=0;
@@ -70,7 +71,8 @@ for (c = 0; v; v >>= 1)
         if ((x & n) == 0)
             ct++; 
    }
-                                                              ***Converting an integer to binary string***
+
+***Converting an integer to binary string***
 
 string DecimalToBinaryString(int a)
 {
@@ -86,4 +88,15 @@ string DecimalToBinaryString(int a)
     }
     cout<<binary<<endl;
     return binary;
+}
+
+***Get Most significant bit ***
+
+ll getMSB(ll n) {
+      n |= (n >> 1);
+      n |= (n >> 2);
+      n |= (n >> 4);
+      n |= (n >> 8);
+      n |= (n >> 16);
+      return n - (n >> 1);
 }

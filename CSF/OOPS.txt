@@ -29,6 +29,14 @@ int main()
  b1.display();
 }
 
+
+                                                 ***Struct Padding***
+
+--> To reduce number of CPU cycles we use extra space in memory allocation struct.
+--> For a 32 bit architecture, 1 CPU cycle is 4 bit.
+--> If one part of variable required 1 cycle and the other part required another cycle then to avoid this compiler completely shift the variable in 1 word and remaining memory is called padding.
+--> Packing is used to avoid padding. #pragma pack(1)
+
                                                   ***class***
 
 
@@ -38,13 +46,28 @@ the only difference between structure and class is that,
 -the members of class are by default private.
 
 membership label--> class name + scope resolution operator(::)
--->you can define member function outside of class as well
--->inside class a function is by default inline
-but outside you have to use inline keywords.
--->class is description of object
--->object is instance of class
--->collection of instance member variable of an object is called state.
-state should be change with the help of method.
+--> you can define member function outside of class as well
+
+inline --> Expands at call site (like macros) to avoid function call overhead.
+--> Compiler may ignore inline for complex functions.
+--> Use inline function for Small, frequent calls (e.g., getters, math ops).
+--> Avoid for large/recursive functions.
+--> inside class a function is by default inline
+--> but outside you have to use inline keywords.
+
+// Implicitly inline (defined inside class)
+class Example {
+public:
+    void show() { cout << "Inline!"; }  
+};
+
+// Explicitly inline (defined outside class)
+inline void Example::display() { cout << "Inline!"; }
+
+--> class is description of object
+--> object is instance of class
+--> collection of instance member variable of an object is called state.
+--> state should be change with the help of method. This is also called Encapsulation.
 class Complex
 {
 private:
@@ -79,7 +102,7 @@ class Account
 {
 private:
 int balance;
-static float roi;//this is the declaration only you have to define outside
+static float roi;//this is the declaration only, you have to define outside
 public:
 void setBalance (int b)
 {
@@ -89,381 +112,471 @@ static void setRoi(float r)
 {
 roi=r;}
 };
-float Account:: roi=3.5;//definition of static member variable
+float Account:: roi=3.5;//definition of static member variable outside class(mandatory)
 
 how to access static variable without having any object of class?
 Account::setRoi(4.5);
+cout << Account::roi;   // Access static variable (if public)
 
 static member function or class member function
--->they can be invoked with or without object
--->they can only access static members of the class
+--> they can be invoked with or without object
+--> they can only access static members of the class
+--> Cannot use this (no access to object-specific data).
+
 
                                              ***Constructors***
 
 
 
--->it is a member function of a class
--->name of the constructor is same as the name of the class
--->it has no return type,so can't use return
--->it must be an instance member function that is it can never be static
+--> Special member function of a class.
+--> Same name as the class.
+--> No return type (not even void). Automatically called when an object is created.
+--> Must be an instance member function (cannot be static).
 
-class Complex
-{
-private:
-int a,b;
+(A) Default Constructor
+--> Takes no arguments.
+--> If no constructor is defined, the compiler provides a default one.
+class Complex {
 public:
-Complex(int x,int y)
-{
-a=x;
-b=y;
-}
-Complex()
-{
-cout<<"Constructor call hua";
-}
-Complex(Complex &c)//without reference the same constructor repetedly call it will create object each time and again again object inilize.
-{
-a=c.a;
-b=c.b;
-}
+    Complex() { cout << "Default Constructor"; }  // User-defined
 };
-void main()
-{
-Complex c1,c2;
-}
-How to call constructor?
--->Constructor is implicitly invoked when an object is created.
--->Constructor is used to solve problem of initialization.
-default constructor:-if you have not define any constructor in class defination.Compiler will make a constructor of without argument.
+Complex c1;  // Calls default constructor
 
-Complex c4=c1;or Complex c4(c1);
--->NO Constructor in class then Compiler make two constructor default and copy constructor
+(B) Parameterized Constructor
+--> Takes arguments to initialize objects.
+class Complex {
+private:
+    int a, b;
+public:
+    Complex(int x, int y) { 
+        a = x; 
+        b = y; 
+    }
+};
+Complex c1(3, 4);  // Calls parameterized constructor
+
+(C) Copy Constructor
+--> Creates an object by copying another object.
+--> Compiler provides a default copy constructor if not defined.
+--> Must take reference (Complex(Complex &c)), otherwise it leads to infinite recursion.
+class Complex {
+public:
+    Complex(Complex &c) {  // Copy constructor
+        a = c.a;
+        b = c.b;
+    }
+};
+Complex c2 = c1;  // Calls copy constructor
+
+
+How to call constructor?
+(A) Implicit Call (Automatic)
+--> When an object is created:
+Complex c1;          // Calls default constructor
+Complex c2(3, 4);    // Calls parameterized constructor
+Complex c3 = c2;     // Calls copy constructor
+
+(B) Explicit Call (Rarely Used)
+--> Using functional notation:
+Complex c4 = Complex(5, 6);  // Explicit call
+
+-->Constructor is used to solve problem of initialization.
+-->No Constructor in class then Compiler make two constructor default and copy constructor
 -->if we not make copy constructor compiler will make copy constructor
+
 
                                                 ***Destructors***
 
 
 
--->it is an instance member funtion of a class
--->name of the destructor is same as the name of a class but preceded by tilde(~)
+--> Special member function of a class.
+--> Same name as the class, prefixed with ~ (tilde).
 -->it can never be static
--->has no return type
--->Destructor takes no argument (No overloading is possible)
+--> No return type (not even void). Automatically called when an object is destroyed.
+--> No arguments (cannot be overloaded).
 
-class Complex
-{
+class GoodExample {
 private:
-int a,b;
+    int* ptr;
 public:
-~Complex()
-{
-}
+    GoodExample() {
+        ptr = new int[100];  // Allocate memory
+    }
+    ~GoodExample() {         // Destructor
+        delete[] ptr;        // Free memory
+        cout << "Destructor called\n";
+    }
 };
--->it is invoked implicitly when object is going to destroy
--->destructor is last funtion before object get destroy
+
+int main() {
+    GoodExample obj;  // Memory allocated
+    return 0;         // Destructor called → Memory freed
+}
+
+When is a Destructor Called?
+--> Object goes out of scope (e.g., local object in a function).
+void test() {
+    Complex c1;  // Constructor called
+}                // Destructor called when `test()` ends
+
+--> delete is called on a dynamically allocated object.
+Complex* c2 = new Complex();  // Constructor called
+delete c2;                    // Destructor called
+
+Complex* arr = new Complex[3];  // Constructor called 3 times
+delete[] arr;                   // Destructor called 3 times
+
+--> Program terminates (global/static objects).
+
 why destructor?
--->it should be defined to release resources allocated to an object
--->let's a member variable is pointer in an object the if the object get destroy then resources allocated to pointer is not get release so you need explicitly release the resources allocated to pointer
+--> it should be defined to release resources allocated to an object
+--> If a member variable is a pointer in an object, and the object gets destroyed, the resources allocated to that pointer are not automatically released. Therefore, you must explicitly release those resources (e.g., using the destructor).
+
+Why and How to Use Virtual Destructors? 
+--> If a class is meant to be inherited (base class), its destructor must be virtual. Otherwise, deleting a derived class object via a base class pointer won’t call the derived class destructor, causing resource leaks.
+
+class Base {
+public:
+    Base() { cout << "Base Constructor\n"; }
+    virtual ~Base() { cout << "Base Destructor\n"; }  // Virtual!
+};
+
+class Derived : public Base {
+public:
+    Derived() { cout << "Derived Constructor\n"; }
+    ~Derived() override { cout << "Derived Destructor\n"; }  // Optional: 'override'
+};
+
+int main() {
+    Base* obj = new Derived();
+    delete obj;  // Correctly calls both destructors
+    return 0;
+}
+--> If a class has any virtual functions, its destructor should be virtual
 
                                             ***Operator Overloading***
 
 
+--> Operator overloading allows you to redefine how operators (like +, -, ++, etc.) work for user-defined types (classes and structures).
 
-class Complex
-{
+(A) Basic Operator Overloading (+, -)
+
+class Complex {
 private:
-int a,b;
+    int a, b;
 public:
-void setData(int x,int y)
-{
-a=x;
-b=y;
-}
-Complex operator +(Complex c)
-{
-Complex tmp;
-tmp.a=a+c.a;
-tmp.b=b+c.b;
-return tmp;
-}
-Complex operator -()
-{
-Complex tmp;
-tmp.a=-a;
-tmp.b=-b;
-return tmp;
-}
+    void setData(int x, int y) {
+        a = x;
+        b = y;
+    }
+
+    // Overloading '+' operator
+    Complex operator+(Complex c) {
+        Complex tmp;
+        tmp.a = a + c.a;  // Adds real parts (a)
+        tmp.b = b + c.b;  // Adds imaginary parts (b)
+        return tmp;
+    }
+
+    // Overloading unary '-' operator (negation)
+    Complex operator-() {
+        Complex tmp;
+        tmp.a = -a;  // Negates real part
+        tmp.b = -b;  // Negates imaginary part
+        return tmp;
+    }
 };
-void main()
-{
-Complex c1,c2,c3,c4;
-c1.setData(3,4);
-c2.setData(5,6);
-c3=c1+c2;
-c4=-c3;
 
+int main() {
+    Complex c1, c2, c3, c4;
+    c1.setData(3, 4);  // c1 = 3 + 4i
+    c2.setData(5, 6);  // c2 = 5 + 6i
+
+    c3 = c1 + c2;  // Calls operator+ → c3 = (3+5) + (4+6)i = 8 + 10i
+    c4 = -c3;      // Calls operator- → c4 = -8 -10i
 }
-when an operator is overloaded with multiple jobs it is known as opertor overloading.
 
-class Integer
-{
+(B) Increment Operators (++) Overloading
+
+class Integer {
 private:
-int x;
-void setData(int a)
-{
-x=a;
-}
-Integer operator++()//pre increment
-{
-Integer i;
-i.x=++x;
-return i;
-}
-Integer operator++(int)//post increment
-{
-Integer i;
-i.x=x++;
-return i;
-}
+    int x;
+public:
+    void setData(int a) { x = a; }
+
+    // Pre-increment (++i)
+    Integer operator++() {
+        Integer i;
+        i.x = ++x;  // Increments first, then assigns
+        return i;
+    }
+
+    // Post-increment (i++)
+    Integer operator++(int) {  // 'int' is a dummy parameter
+        Integer i;
+        i.x = x++;  // Assigns first, then increments
+        return i;
+    }
 };
-void main()
-{
-Integer i1,i2;
-i1.setData(3);
-i2=++i1;
-i2=i1++;
+
+int main() {
+    Integer i1, i2;
+    i1.setData(3);  // x = 3
+
+    i2 = ++i1;  // Pre-increment → i1.x becomes 4, i2.x = 4
+    i2 = i1++;  // Post-increment → i2.x = 4, then i1.x becomes 5
 }
+
+Rules of Operator Overloading
+--> Cannot change operator precedence (e.g., * is always evaluated before +).
+--> Cannot overload operators for built-in types (e.g., int + int cannot be changed).
+--> Cannot create new operators (e.g., ** is not allowed).
+--> Some operators cannot be overloaded (e.g., ::, .*, ?:).
+
 
                                                  ***Friend Function***
 
 
 
--->Friend function is not a member functio of a class to which it is friend
--->Friend function is declared in the class with friend keyword
--->it must be defined outside the class to which it is friend
--->Friend function can access any member of the class to which it is friend
--->Friend function cannot access memebers of the class directly
--->it has no caller objext
--->it should not be defined with membership label
+--> Not a member of the class.
+--> Declared inside the class with friend.
+--> Defined outside the class (no membership label ClassName::).
+--> Can access private/protected members of the class.
+--> No caller object (called like a normal function)
 
-class Complex
-{
+class Complex {
 private:
-int a,b;
+    int a, b;
 public:
-void setData(int x,int y)
-{
-a=x;
-b=y;
-}
-friend void fun(Complex);
+    void setData(int x, int y) { a = x; b = y; }
+    friend void show(Complex c);  // Declaration
 };
-void fun(Complex c)
-{
-cout<<c.a+c.b<<endl;
-}
-void main()
-{
-Complex c1;
-fun(c1);
-}
--->Friend function can become friend to more than one class
-class B;
-class A
-{
-private:
-int a;
-public:
-void setData(int x)
-{a=x;}
-friend void fun(A,B);
-};
-class B
-{
-private:
- int b;
-public:
-void setData(int y)
-{b=y;}
-friend void fun(A,B);
-};
-void fun(A o1 , B o2)
-{
-cout<<o1.a+o2.b<<endl;
-}
-void main()
-{
-A obj1;
-B obj2;
-obj1.setData(2);
-obj2.setData(3);
-fun(obj1,obj2);
-}
--->Overloading of operators as a friend function
-class Complex
-{
-private:
-int a,b;
-public:
-void setData(int x,int y)
-{
-a=x;
-b=y;
-}
-friend Complex operator +(Complex,Complex);
-};
-Complex operator+(Complex X, Complex Y)
-{
-Complex tmp;
-tmp.a=X.a+Y.a;
-tmp.b=X.b+Y.b;
-return tmp;
-}
-void main()
-{
-Complex c1,c2,c3;
-c1.setData(3,4);
-c2.setData(5,6);
-c3=c1+c2;
-}
--->Overloading of insertion and extraction opertators
-class Complex
-{
-private;
-int a,b;
-public:
-void setData(int x,int y)
-{
-a=x;
-b=y;
-}
-friend ostream& operator<<(ostream&,Complex);
-friend istream& operator>>(istream&,Complex&);
-};
-ostream& operator<<(ostream &dout,Complex C)
-{
-cout<<C.a<<" "<<C.b;
-return dout;
-}
-istream& operator>>(istream &din, Complex &C)
-{
-cin>>C.a>>C.b;
-return din;
-}
-void main()
-{
-Complex c1;
-cin>>c1;
-cout<<c1;//operator<<(cout,c1);
 
--->Member function of one class can become friend to another class
-class A
-{
+// Definition (outside class)
+void show(Complex c) {
+    cout << c.a << " " << c.b;  // Accesses private members
+}
+
+int main() {
+    Complex c1;
+    c1.setData(3, 4);
+    show(c1);  // Output: 3 4
+}
+
+Why Use Friend Functions?
+--> Allows external functions to access private data.
+--> Useful for operator overloading (e.g., <<, >>).
+--> Enables shared functionality between multiple classes.
+
+(A) A single function can be a friend of multiple classes.
+
+class B;  // Forward declaration
+
+class A {
+private:
+    int a;
 public:
-void fun()
-{...}
-void foo()
-{...}
+    void setData(int x) { a = x; }
+    friend void sum(A, B);  // Friend of A
 };
-class B
-{
-//friend class A;
-friend void A::fun();
-friend void B::foo();
+
+class B {
+private:
+    int b;
+public:
+    void setData(int y) { b = y; }
+    friend void sum(A, B);  // Friend of B
 };
+
+// Friend function definition
+void sum(A obj1, B obj2) {
+    cout << obj1.a + obj2.b;  // Accesses private members of A and B
+}
+
+int main() {
+    A x;
+    B y;
+    x.setData(5);
+    y.setData(10);
+    sum(x, y);  // Output: 15
+}
+
+(B) Overloading operators as friend functions
+--> Some operators (like <<, >>) must be overloaded as friend functions because:
+--> They require the left operand to be a stream object (cout, cin).
+--> They cannot be member functions (since we can't modify ostream/istream).
+class Complex {
+private:
+    int a, b;
+public:
+    void setData(int x, int y) { a = x; b = y; }
+    friend Complex operator+(Complex, Complex);  // Friend declaration
+};
+
+// Definition
+Complex operator+(Complex X, Complex Y) {
+    Complex tmp;
+    tmp.a = X.a + Y.a;
+    tmp.b = X.b + Y.b;
+    return tmp;
+}
+
+int main() {
+    Complex c1, c2, c3;
+    c1.setData(3, 4);
+    c2.setData(5, 6);
+    c3 = c1 + c2;  // Calls operator+
+}
+
+(C) Overloading of insertion and extraction opertators
+
+class Complex {
+private:
+    int a, b;
+public:
+    friend ostream& operator<<(ostream&, Complex);  // Output
+    friend istream& operator>>(istream&, Complex&); // Input
+};
+
+// Overloading << (Output)
+ostream& operator<<(ostream &dout, Complex C) {
+    dout << C.a << " + " << C.b << "i";
+    return dout;
+}
+
+// Overloading >> (Input)
+istream& operator>>(istream &din, Complex &C) {
+    din >> C.a >> C.b;
+    return din;
+}
+
+int main() {
+    Complex c1;
+    cin >> c1;    // Calls operator>>
+    cout << c1;   // Calls operator<<
+}
+
+(D) Member function of one class can become friend to another class
+--> A specific member function of a class can be a friend of another class.
+
+class B;  // Forward declaration
+
+class A {
+public:
+    void fun1();  // Will be friend of B
+    void fun2();  // Not a friend
+};
+
+class B {
+private:
+    int b;
+public:
+    friend void A::fun1();  // Only fun1 is friend
+};
+
+void A::fun1() {
+    B obj;
+    obj.b = 10;  // Allowed (friend access)
+    cout << obj.b;
+}
+
+void A::fun2() {
+    B obj;
+    // obj.b = 20;  // Error (not a friend)
+}
+
+int main() {
+    A a;
+    a.fun1();  // Works
+    a.fun2();  // No access to B::b
+}
 
                                                 ***Inheritance***
 
 
 
-It is a process of inheriting properties and behaviours of existing class into a new class.
-Existing class = old class = Parent class
-New class = Child class = Derived class
+--> Inheritance allows a new class (Derived/Child) to acquire properties and behaviors from an existing class (Base/Parent).
+--> Base Class (Parent): The class being inherited from.
+--> Derived Class (Child): The class that inherits.
+--> Visibility Modes: Control access to inherited members (public, protected, private).
 
-class Base_Class
-{
+class Base {
+    // Base class members
 };
-class Derived_Class: Visibility_Mode Base_Class
-{
+
+class Derived : visibility_mode Base {
+    // Derived class members
 };
-class Car
-{
-};
-class SportsCar:public Car
-{
-};
+
 Types of Inheritance
-1.Single Inheritance
-class A
-{
-};
-class B:public A
-{
-};
 
-2.Multilevel Inheritance
-class A
-{
-};
-class B:public A
-{
-};
-class C:public B
-{
-};
-3.Multiple Inheritance
-class A1
-{
-};
-class A2
-{
-};
-class B:public A1,public A2
-{
-};
-4.Hierarchical Inheritance
-class A
-{
-};
-class B1:public A
-{
-};
-class B2:public A
-{
-};
+(A) Single Inheritance (One base class → One derived class)
+class A { /* Parent */ };
+class B : public A { /* Child */ };
 
-Visibility Modes
-Private
-Protected
-Public
+(B) Multilevel Inheritance (Chain of inheritance)
+class A { };
+class B : public A { };
+class C : public B { };  // C inherits from B, which inherits from A
 
-class A
-{
-private:
-int a;
-protected:
-void setValue(int k)
-{
-a=k;}
-};
-class B:public A
-{
+(C) Multiple Inheritance (Derived class inherits from multiple base classes)
+class A1 { };
+class A2 { };
+class B : public A1, public A2 { };  // B inherits from A1 and A2
+
+(D) Hierarchical Inheritance (One base class → Multiple derived classes)
+class A { };
+class B1 : public A { };
+class B2 : public A { };  // Both B1 and B2 inherit from A
+
+Access Rules
+
+--> private → Never accessible in derived class.
+--> protected → Accessible in derived class.
+--> public → Depends on inheritance mode.
+
+Constructors in Inheritance
+--> Base class constructor runs first, then derived class.
+--> If base has no default constructor, derived must explicitly call base constructor.
+--> Destructors run in reverse order (Derived → Base).
+class Base {
 public:
-void setData(int x)
-{
-setValue(x);}
+    Base() { cout << "Base Constructor\n"; }
+    Base(int x) { cout << "Base Param: " << x << "\n"; }
 };
-void main()
-{
-B obj;
+
+class Derived : public Base {
+public:
+    // Calls Base() by default
+    Derived() { cout << "Derived Constructor\n"; }
+
+    // Explicitly calls Base(int)
+    Derived(int y) : Base(y) { 
+        cout << "Derived Param: " << y << "\n"; 
+    }
+};
+
+int main() {
+    Derived d1;      // Output: Base Constructor → Derived Constructor
+    Derived d2(5);   // Output: Base Param: 5 → Derived Param: 5
 }
--->object of child class can not access private and protected
 
-                                         ***Constructor in Inheritance***
+Why Derived Must Call Base Constructor?
+--> If Base has no default constructor, the derived class must explicitly call a base constructor.
+class Base {
+public:
+    Base(int x) { }  // No default constructor
+};
 
+class Derived : public Base {
+public:
+    // ❌ Error: Must call Base(int)
+    Derived() { }  
 
+    // ✅ Correct: Explicitly calls Base(int)
+    Derived() : Base(0) { }  
+};
 
-we need to make constructor in child class if you already define a constructor in parent class otherwise you will get error.
 
                                                ***this pointer**
 
@@ -481,16 +594,49 @@ Ex-
 -->this pointer can not be modify.
 -->it is used to refer caller object in member function.
 
-class Box
-{
- private:
- int l,b,h;
- public:
- void setDimension (int l, int b, int h)
- {
-  this->l=l; this->b=b;this->h=h;//name conflict problem solved
- }
+(A) Resolving Name Conflicts
+--> When a local variable (function parameter) has the same name as a class member, this helps distinguish them.
+class Box {
+private:
+    int l, b, h;
+public:
+    void setDimension(int l, int b, int h) {
+        this->l = l;  // ✅ Refers to member 'l'
+        this->b = b;  // ✅ Refers to member 'b'
+        this->h = h;  // ✅ Refers to member 'h'
+    }
 };
+(B) Returning the Current Object
+--> this can be used to return the current object (useful for method chaining).
+class Box {
+public:
+    Box& setL(int l) { 
+        this->l = l; 
+        return *this;  // Returns the current object
+    }
+    Box& setB(int b) { 
+        this->b = b; 
+        return *this; 
+    }
+};
+
+int main() {
+    Box b;
+    b.setL(10).setB(20);  // Method chaining
+}
+
+How this Works?
+--> Implicitly Passed: When a member function is called, the compiler silently passes this as a hidden argument.
+// What you write:
+obj.func(x);
+
+// What compiler does:
+func(&obj, x);  // 'this' is passed as first argument
+
+--> Cannot Modify this: It is a constant pointer (ClassName* const), so its address cannot be changed.
+this = nullptr;  // ❌ Error (cannot modify 'this')
+
+--> Compare objects (this == &otherObj).
 
                                               ***new and delete***
 
@@ -513,90 +659,129 @@ delete []p;// it will delete the pointed array.
 
                                              ***Method Overriding***
 
+--> Same function name in both base and derived class.
+--> Same return type and parameters (signature must match).
+--> Inheritance must be present (derived class extends base class).
+--> The function in the base class must be virtual (for runtime polymorphism).
 
-
-class A
-{
+class A {
 public:
-void f1(){}
-void f2(){}
+    virtual void f1() { cout << "A::f1()\n"; }  // Virtual enables overriding
+    void f2() { cout << "A::f2()\n"; }
+};
 
+class B : public A {
+public:
+    void f1() override { cout << "B::f1()\n"; }  // Overrides A::f1()
+    void f2(int x) { cout << "B::f2(int)\n"; }   // ❌ Not overriding (different signature)
 };
-class B:public A
-{
-void f1(){}//Method overrding
-void f2(int x)//Method hiding
-};
-int main()
-{
-B obj;
-obj.f1();
+
+int main() {
+    B obj;
+    obj.f1();  // Calls B::f1() (overridden)
+    obj.f2(5); // Calls B::f2(int) (hides A::f2())
+    // obj.f2(); // ❌ Error: A::f2() is hidden
 }
 
-Early Binding-->In case of overriding compiler will bind function when you call function with the help of obj.if you are accessing function by object then compiler will call function based on the data type of object , similarly for pointer it will call based on the data type of pointer.
+Early Binding (Compile-Time Polymorphism)
+--> The compiler decides which function to call at compile-time based on the object's declared type (not its actual type).
+A* ptr = new B();  // Base pointer, Derived object
+ptr->f1();  // Calls B::f1() (if virtual)
+ptr->f2();  // Calls A::f2() (early binding)
 
 
                                               ***Virtual function***
 
 
-
-
--->Base class pointer can point to the object of any of its descendant class(this can lead to same pointer pointing to different type of class)
--->But its converse is not true.
-class A
-{
+Early Binding with Base Pointers
+--> When you use a base class pointer to point to a derived class object, the compiler (by default) uses early binding (compile-time decision) to call functions. 
+--> This means: It calls the base class version of the function, even if the object is of a derived class.
+class A {
 public:
-void f1(){}
-void f2(){}
-
+    void f1() { cout << "A::f1()\n"; }  // Not virtual
 };
-class B:public A
-{
-void f1(){}//Method overrding
-void f2(int x)//Method hiding
-};
-int main()
-{
-A *p,o1;
-B o2;
-p=&o2;
-p->f1();//A
-}
--->Due to early binding pointer will call function of class A even it is pointing to object of class B. This issue can be solve by delaying early binding (or late binding) with the help of virtual function.
 
-class A
-{
+class B : public A {
 public:
-virtual void f1(){}
-void f2(){}
+    void f1() { cout << "B::f1()\n"; }  // Overriding (but not virtual)
+};
 
-};
-class B:public A
-{
-void f1(){}//Method overrding
-void f2(int x)//Method hiding
-};
-int main()
-{
-A *p,o1;
-B o2;
-p=&o2;
-p->f1();//B
+int main() {
+    A *p, o1;
+    B o2;
+    p = &o2;       // Base pointer points to derived object
+    p->f1();       // Calls A::f1() ❌ (Early binding)
 }
--->By putting virtual keyword compiler will understand that there be late binding.
--->every descendent function of f1 will be virtual you donot need to put virtual in each descendent class.
--->Compiler will create a pointer name vptr in base class where virtual funtion is present and it will create array vtable for base class and for each descendent class that mean one pointer and many array .
--->vptr points array address
--->and each array block contain address of each virtual funtion in that particular class or there parent class if tha funtion is not overrided in child class but it is virtual in parent class.
+
+
+Virtual Functions (Late Binding)
+--> By declaring a function as virtual, we enable runtime polymorphism (late binding). The correct function is called based on the actual object type, not the pointer type.
+class A {
+public:
+    virtual void f1() { cout << "A::f1()\n"; }  // Now virtual
+};
+
+class B : public A {
+public:
+    void f1() override { cout << "B::f1()\n"; }  // Overrides A::f1()
+};
+
+int main() {
+    A *p, o1;
+    B o2;
+    p = &o2;       // Base pointer points to derived object
+    p->f1();       // Calls B::f1() ✅ (Late binding)
+}
+
+--> Once a function is virtual in the base class, all derived versions are automatically virtual (even without the keyword).
+
+How Virtual Functions Work Internally? (vptr and vtable)
+-->When a class has at least one virtual function, the compiler adds:
+
+(A) vptr (Virtual Pointer):
+-->A hidden pointer in every object of the class.
+-->Points to the class’s vtable (Virtual Table).
+
+(B) vtable (Virtual Table):
+--> A hidden array of function pointers.
+--> Contains addresses of all virtual functions for that class.
+class A {
+public:
+    virtual void f1() {}  // vtable entry 1
+    virtual void f2() {}  // vtable entry 2
+};
+
+class B : public A {
+public:
+    void f1() override {}  // Overrides A::f1()
+    // f2() is inherited (no override)
+};
+
+vtable for A:
+Index	Function Address
+0	A::f1()
+1	A::f2()
+
+vtable for B:
+Index	Function Address
+0	B::f1()	// Overridden
+1	A::f2()	// Inherited
+
+How It Works at Runtime?
+--> When p->f1() is called:
+--> The compiler follows p->vptr to find the vtable.
+--> It then calls the function at vtable[0] (which is B::f1() if p points to a B object).
+
 
                                               ***Abstract Class***
 
 
 
 
-Pure Virtual function-->A do nothing function is pure virtual function.
--->You can not create an object of class which contain pure virtual function.
--->for accessing fucntion you need to override the virtual function in child class.
+Pure Virtual function
+--> A do nothing function is pure virtual function.
+--> You can not create an object of class which contain pure virtual function.
+--> for accessing fucntion you need to override the virtual function in child class.
 class Person
 {
 public:
@@ -610,8 +795,67 @@ void fun()
 }
 };
 
--->A class containing pure virtual function is an abstract class.
--->We can not instantiate abstract class.
+--> A class containing at least one pure virtual function is an abstract class.
+--> We can not instantiate abstract class.
+--> Acts as an interface or base class for derived classes.
+
+Uses of Abstract Class
+--> When you want to enforce a common interface
+--> When base class shouldn’t be instantiated
+
+#include <iostream>
+using namespace std;
+
+// Abstract class (due to pure virtual function)
+class Shape {
+public:
+    virtual float area() = 0;  // Pure virtual
+    virtual void display() {   // Can have implemented methods
+        cout << "This is a shape." << endl;
+    }
+};
+
+// Concrete derived class
+class Circle : public Shape {
+    float radius;
+public:
+    Circle(float r) : radius(r) {}
+    float area() override {    // Must override
+        return 3.14 * radius * radius;
+    }
+};
+
+// Concrete derived class
+class Square : public Shape {
+    float side;
+public:
+    Square(float s) : side(s) {}
+    float area() override {    // Must override
+        return side * side;
+    }
+};
+
+int main() {
+    // Shape s;  // ❌ Error: Cannot instantiate abstract class
+
+    Circle c(5);
+    Square sq(4);
+
+    cout << "Circle area: " << c.area() << endl;  // 78.5
+    cout << "Square area: " << sq.area() << endl; // 16
+
+    // Polymorphism
+    Shape* shapes[] = { &c, &sq };
+    for (Shape* s : shapes) {
+        s->display();  // Inherited non-pure function
+        cout << "Area: " << s->area() << endl;
+    }
+}
+
+--> if a derived class doesn't override a pure virtual function the derived class also becomes abstract, and cannot be instantiated.
+--> abstract classes can have constructors (used by derived classes).
+--> abstract classes can have member variables.
+
 
                                                   ***Template***
 
@@ -803,7 +1047,7 @@ Dangling pointer-->pointers that do not point to a valid object of the appropria
                                 ***Type Conversion***
 
 
-1.Primitive Type to class type thorugh constructor
+1.Primitive Type to class type through constructor
 class Complex
 {
  private:
@@ -821,7 +1065,7 @@ int main()
 }
 
 2.class type to primitive type
--->class type to primitve type can be implemented with casting opertor
+-->class type to primitive type can be implemented with casting operator
 operator type()
 {
 ...
